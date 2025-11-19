@@ -1,0 +1,90 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+// ------------ ENUMS ------------------
+
+enum Branch {
+  COPC
+  COSE
+  ENC
+  MECH
+  CVC
+  ECE
+  CHEM
+}
+
+enum Role {
+  STUDENT
+  TEACHER
+}
+
+
+// ------------ MODELS ------------------
+
+model User {
+  id        String   @id @default(cuid())
+  name      String?
+  email     String   @unique
+  rollNo    String?  @unique
+  branch    Branch?
+  role      Role     @default(STUDENT)
+  semester  Int?
+  section   String?           // optional: A, B, C etc.
+  image     String?           // profile photo
+
+  // relations
+  subjects  SubjectEnrollment[]
+  taughtSubjects Subject[] @relation("TeacherSubjects")
+
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model Subject {
+  id          String   @id @default(cuid())
+  code        String   @unique            // e.g. PCS201
+  name        String
+  description String?
+  semester    Int?
+  branch      Branch?                     // which branch owns this subject
+
+  // relations
+  enrollments SubjectEnrollment[]
+  teachers    User[] @relation("TeacherSubjects")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+// ------------ JUNCTION TABLE ------------------
+
+model SubjectEnrollment {
+  id        String   @id @default(cuid())
+
+  // relations
+  user     User     @relation(fields: [userId], references: [id])
+  userId   String
+
+  subject  Subject  @relation(fields: [subjectId], references: [id])
+  subjectId String
+
+  // extra metadata
+  enrolledAt DateTime @default(now())
+  isActive   Boolean  @default(true)
+}
