@@ -4,6 +4,7 @@ import { useAuthStore } from "@/store/auth-store"
 import { Bell, Search, Settings } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { ThemeToggle } from "@/components/theme-toggle"
 
 export function TeacherTopnav() {
   const currentUser = useAuthStore((state) => state.currentUser)
@@ -22,6 +23,7 @@ export function TeacherTopnav() {
           <Button variant="ghost" size="icon" className="text-muted-foreground">
             <Bell className="w-5 h-5" />
           </Button>
+          <ThemeToggle />
           <Button variant="ghost" size="icon" className="text-muted-foreground">
             <Settings className="w-5 h-5" />
           </Button>

@@ -34,8 +34,8 @@ const mockUsers = {
     },
     teacher1: {
         id: "teacher1",
-        email: "prof.amit@thapar.edu",
-        name: "Prof. Amit Kumar",
+        email: "priya.verma@thapar.edu",
+        name: "Prof. Priya Verma",
         branch: "CSE",
         role: "Teacher",
         profileImage: "/placeholder.svg?height=40&width=40"
@@ -49,7 +49,7 @@ const mockSubjects = [
         branch: "CSE",
         semester: 3,
         credits: 4,
-        faculty: "Prof. Amit Kumar"
+        faculty: "Prof. Priya Verma"
     },
     {
         id: "sub2",

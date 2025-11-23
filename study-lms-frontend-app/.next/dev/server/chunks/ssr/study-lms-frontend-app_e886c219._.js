@@ -34,7 +34,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$
 const buttonVariants = (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$class$2d$variance$2d$authority$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["cva"])("inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive", {
     variants: {
         variant: {
-            default: 'bg-primary text-primary-foreground hover:bg-primary/90',
+            default: 'bg-primary text-primary-foreground ',
             destructive: 'bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60',
             outline: 'border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50',
             secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
@@ -347,8 +347,8 @@ const mockUsers = {
     },
     teacher1: {
         id: "teacher1",
-        email: "prof.amit@thapar.edu",
-        name: "Prof. Amit Kumar",
+        email: "priya.verma@thapar.edu",
+        name: "Prof. Priya Verma",
         branch: "CSE",
         role: "Teacher",
         profileImage: "/placeholder.svg?height=40&width=40"
@@ -362,7 +362,7 @@ const mockSubjects = [
         branch: "CSE",
         semester: 3,
         credits: 4,
-        faculty: "Prof. Amit Kumar"
+        faculty: "Prof. Priya Verma"
     },
     {
         id: "sub2",
@@ -1103,34 +1103,12 @@ __turbopack_context__.s([
     ()=>useThemeStore
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$zustand$2f$esm$2f$react$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/study-lms-frontend-app/node_modules/zustand/esm/react.mjs [app-ssr] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$zustand$2f$esm$2f$middleware$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/study-lms-frontend-app/node_modules/zustand/esm/middleware.mjs [app-ssr] (ecmascript)");
 ;
-;
-const useThemeStore = (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$zustand$2f$esm$2f$react$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["create"])()((0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$zustand$2f$esm$2f$middleware$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["persist"])((set)=>({
-        theme: "system",
-        setTheme: (theme)=>{
-            set({
-                theme
-            });
-            applyTheme(theme);
-        }
-    }), {
-    name: "theme-store",
-    onRehydrateStorage: ()=>(state)=>{
-            if (state) {
-                applyTheme(state.theme);
-            }
-        }
-}));
-function applyTheme(theme) {
-    const root = document.documentElement;
-    if (theme === "system") {
-        const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-        root.classList.toggle("dark", isDark);
-    } else {
-        root.classList.toggle("dark", theme === "dark");
-    }
-}
+const useThemeStore = (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$zustand$2f$esm$2f$react$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["create"])(()=>({
+        theme: "light",
+        setTheme: ()=>{
+        /* no-op: theming disabled, only light theme used */ }
+    }));
 }),
 "[project]/study-lms-frontend-app/components/theme-toggle.tsx [app-ssr] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
@@ -1416,7 +1394,7 @@ function LoginPage() {
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
                                     variant: selectedRole === "Student" ? "default" : "outline",
                                     onClick: ()=>handleRoleChange("Student"),
-                                    className: "gap-2 px-6 py-2 h-auto",
+                                    className: "gap-2 px-6 py-2 h-auto bg-primary text-primary-foreground hover:bg-primary ",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$book$2d$open$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__BookOpen$3e$__["BookOpen"], {
                                             className: "w-4 h-4"

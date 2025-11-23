@@ -522,6 +522,7 @@
   body {
     background-color: var(--background);
     color: var(--foreground);
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
 
@@ -3320,6 +3321,12 @@
       .hover\:bg-muted\/50:hover {
         background-color: color-mix(in oklab, var(--muted) 50%, transparent);
       }
+    }
+  }
+
+  @media (hover: hover) {
+    .hover\:bg-primary:hover {
+      background-color: var(--primary);
     }
   }
 

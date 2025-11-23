@@ -82,7 +82,7 @@ export default function LoginPage() {
             <Button
               variant={selectedRole === "Student" ? "default" : "outline"}
               onClick={() => handleRoleChange("Student")}
-              className="gap-2 px-6 py-2 h-auto"
+              className="gap-2 px-6 py-2 h-auto bg-primary text-primary-foreground hover:bg-primary "
             >
               <BookOpen className="w-4 h-4" />
               <span>Student</span>
