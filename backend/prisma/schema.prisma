@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,78 +7,324 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-// ------------ ENUMS ------------------
-
-enum Branch {
-  COPC
-  COSE
-  ENC
-  MECH
-  CVC
-  ECE
-  CHEM
-}
+// ------------------------
+// Enums
+// ------------------------
 
 enum Role {
   STUDENT
   TEACHER
 }
 
+enum AssessmentType {
+  MCQ
+  CODING
+}
 
-// ------------ MODELS ------------------
+enum AttemptStatus {
+  IN_PROGRESS
+  SUBMITTED
+  EVALUATED
+  CANCELED
+}
 
+
+/// Users: students, teachers, admins
 model User {
-  id        String   @id @default(cuid())
-  name      String?
-  email     String   @unique
-  rollNo    String?  @unique
-  branch    Branch?
-  role      Role     @default(STUDENT)
-  semester  Int?
-  section   String?           // optional: A, B, C etc.
-  image     String?           // profile photo
+  id           String   @id @default(uuid())
+  name         String?
+  email        String   @unique
+  passwordHash String?
+  role         Role     @default(STUDENT)
+
+  // student-only
+  rollNumber   String?  @unique
+  branchId     String?  
+  branch       Branch?  @relation(fields: [branchId], references: [id])
+
+  avatarUrl    String?
+  cgpa         Float?
+  isActive     Boolean  @default(true)
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   // relations
-  subjects  SubjectEnrollment[]
-  taughtSubjects Subject[] @relation("TeacherSubjects")
-
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  uploadedFiles        File[]
+  createdAssessments   Assessment[] @relation("assessment_creator")
+  assessmentAttempts   AssessmentAttempt[]
+  createdAssignments   Assignment[]  @relation("assignment_creator")
+  submissions          AssignmentSubmission[]
+  groups               GroupMember[]
+  createdEvents        CalendarEvent[] @relation("event_creator")
+  salaryRecords        TeacherSalary[]
+  fees                 Fee[]
 }
 
+/// Branch / department (CSE, ECE...)
+model Branch {
+  id        String   @id @default(uuid())
+  name      String
+  code      String?  @unique
 
+  users     User[]
+  subjects  Subject[]
+  labs      Lab[]
+  calendarEventBranches CalendarEventBranch[]
+}
+
+/// Subject under a branch
 model Subject {
-  id          String   @id @default(cuid())
-  code        String   @unique            // e.g. PCS201
-  name        String
-  description String?
-  semester    Int?
-  branch      Branch?                     // which branch owns this subject
+  id        String   @id @default(uuid())
+  name      String
+  code      String?
+  branchId  String?
+  branch    Branch?  @relation(fields: [branchId], references: [id])
 
-  // relations
-  enrollments SubjectEnrollment[]
-  teachers    User[] @relation("TeacherSubjects")
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  folders   Folder[]
+  files     File[]
+  assessments Assessment[]
+  assignments Assignment[]
 }
 
-
-// ------------ JUNCTION TABLE ------------------
-
-model SubjectEnrollment {
-  id        String   @id @default(cuid())
-
-  // relations
-  user     User     @relation(fields: [userId], references: [id])
-  userId   String
-
-  subject  Subject  @relation(fields: [subjectId], references: [id])
+/// Folder within a subject for study materials
+model Folder {
+  id        String   @id @default(uuid())
+  name      String
   subjectId String
+  subject   Subject  @relation(fields: [subjectId], references: [id])
 
-  // extra metadata
-  enrolledAt DateTime @default(now())
-  isActive   Boolean  @default(true)
+  files     File[]
+  createdAt DateTime @default(now())
 }
+
+/// File metadata only; binary stored by chosen provider (UploadThing / local / S3)
+model File {
+  id           String          @id @default(uuid())
+  filename     String
+  url          String
+  mimeType     String?
+  size         Int?
+  externalId   String?         // id/key provided by storage provider (UploadThing file id, S3 key)
+
+  subjectId    String?
+  subject      Subject?        @relation(fields: [subjectId], references: [id])
+
+  folderId     String?
+  folder       Folder?         @relation(fields: [folderId], references: [id])
+
+  uploadedById String?
+  uploadedBy   User?           @relation(fields: [uploadedById], references: [id])
+
+  uploadedAt   DateTime        @default(now())
+  metadata     Json?
+
+  // relations for submissions
+  submissionFiles AssignmentSubmissionFile[]
+}
+
+/// Assessments (MCQ / Coding)
+model Assessment {
+  id             String         @id @default(uuid())
+  title          String
+  description    String?
+  type           AssessmentType
+
+  subjectId      String?
+  subject        Subject?       @relation(fields: [subjectId], references: [id])
+
+  createdById    String?
+  creator        User?          @relation("assessment_creator", fields: [createdById], references: [id])
+
+  passcodeHash   String?
+  durationMin    Int?
+  startAt        DateTime?
+  endAt          DateTime?
+  maxMarks       Int?
+
+  // questions schema stored as JSON for flexibility; can be normalized later
+  questionsJson  Json?
+
+  attempts       AssessmentAttempt[]
+  calendarEvent  CalendarEvent? @relation(fields: [calendarEventId], references: [id])
+  calendarEventId String?
+
+  createdAt      DateTime       @default(now())
+}
+
+/// Attempts by students for assessments
+model AssessmentAttempt {
+  id            String       @id @default(uuid())
+  assessmentId  String
+  assessment    Assessment   @relation(fields: [assessmentId], references: [id])
+
+  studentId     String
+  student       User         @relation(fields: [studentId], references: [id])
+
+  startedAt     DateTime     @default(now())
+  submittedAt   DateTime?
+  score         Float?
+  status        AttemptStatus @default(IN_PROGRESS)
+  attemptData   Json?         // answers, code submissions, etc
+  cameraOn      Boolean?
+  micOn         Boolean?
+
+  createdAt     DateTime     @default(now())
+
+  @@index([assessmentId])
+  @@index([studentId])
+}
+
+/// Assignments created by teachers
+model Assignment {
+  id           String    @id @default(uuid())
+  title        String
+  description  String?
+
+  subjectId    String?
+  subject      Subject?  @relation(fields: [subjectId], references: [id])
+
+  createdById  String?
+  creator      User?     @relation("assignment_creator", fields: [createdById], references: [id])
+
+  dueAt        DateTime?
+  groupAllowed Boolean   @default(false)
+
+  createdAt    DateTime  @default(now())
+  submissions  AssignmentSubmission[]
+}
+
+/// Student groups for group assignments
+model Group {
+  id         String         @id @default(uuid())
+  name       String?
+  createdById String?
+  createdBy  User?          @relation(fields: [createdById], references: [id])
+  createdAt  DateTime       @default(now())
+
+  members    GroupMember[]
+  submissions AssignmentSubmission[]
+}
+
+model GroupMember {
+  id       String  @id @default(uuid())
+  groupId  String
+  group    Group   @relation(fields: [groupId], references: [id])
+
+  userId   String
+  user     User    @relation(fields: [userId], references: [id])
+
+  role     String? // "member" | "leader"
+  joinedAt DateTime @default(now())
+
+  @@unique([groupId, userId])
+}
+
+/// Assignment submissions (individual or group)
+model AssignmentSubmission {
+  id            String   @id @default(uuid())
+  assignmentId  String
+  assignment    Assignment @relation(fields: [assignmentId], references: [id])
+
+  submittedById String?  // nullable when group submission
+  submittedBy   User?    @relation(fields: [submittedById], references: [id])
+
+  groupId       String?
+  group         Group?   @relation(fields: [groupId], references: [id])
+
+  submittedAt   DateTime @default(now())
+  metadata      Json?
+  grade         Float?
+  feedback      String?
+
+  files         AssignmentSubmissionFile[]
+}
+
+/// Join table: many files can be attached to a submission
+model AssignmentSubmissionFile {
+  id           String   @id @default(uuid())
+  submissionId String
+  submission   AssignmentSubmission @relation(fields: [submissionId], references: [id])
+
+  fileId       String
+  file         File     @relation(fields: [fileId], references: [id])
+}
+
+/// Labs / rooms that can be booked
+model Lab {
+  id        String   @id @default(uuid())
+  name      String
+  code      String?
+  location  String?
+  capacity  Int?
+  branchId  String?
+  branch    Branch?  @relation(fields: [branchId], references: [id])
+
+  events    CalendarEvent[]
+}
+
+/// Calendar events — used for lab-evals / bookings
+model CalendarEvent {
+  id           String   @id @default(uuid())
+  title        String
+  description  String?
+
+  subjectId    String?
+  subject      Subject? @relation(fields: [subjectId], references: [id])
+
+  assessmentId String?
+  assessment   Assessment? @relation(fields: [assessmentId], references: [id])
+
+  startAt      DateTime
+  endAt        DateTime
+
+  createdById  String?
+  creator      User?    @relation("event_creator", fields: [createdById], references: [id])
+
+  labId        String?
+  lab          Lab?     @relation(fields: [labId], references: [id])
+
+  branches     CalendarEventBranch[]
+  createdAt    DateTime  @default(now())
+
+  // NOTE: preventing overlapping bookings must be enforced at the API/backend layer
+}
+
+/// Join table: which branches an event applies to
+model CalendarEventBranch {
+  id              String         @id @default(uuid())
+  calendarEventId String
+  calendarEvent   CalendarEvent  @relation(fields: [calendarEventId], references: [id])
+
+  branchId        String
+  branch          Branch         @relation(fields: [branchId], references: [id])
+
+  @@unique([calendarEventId, branchId])
+}
+
+/// Teacher salary records
+model TeacherSalary {
+  id         String   @id @default(uuid())
+  teacherId  String
+  teacher    User     @relation(fields: [teacherId], references: [id])
+
+  base       Float
+  allowances Float?
+  deductions Float?
+  periodStart DateTime
+  periodEnd   DateTime
+  paid       Boolean  @default(false)
+  createdAt  DateTime @default(now())
+}
+
+/// School fee records
+model Fee {
+  id        String   @id @default(uuid())
+  studentId String
+  student   User     @relation(fields: [studentId], references: [id])
+  amount    Float
+  dueDate   DateTime?
+  paid      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
