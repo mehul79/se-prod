@@ -107,7 +107,7 @@ model File {
   url          String
   mimeType     String?
   size         Int?
-  externalId   String?         // id/key provided by storage provider (UploadThing file id, S3 key)
+  externalId   String?
 
   subjectId    String?
   subject      Subject?        @relation(fields: [subjectId], references: [id])
@@ -121,7 +121,6 @@ model File {
   uploadedAt   DateTime        @default(now())
   metadata     Json?
 
-  // relations for submissions
   submissionFiles AssignmentSubmissionFile[]
 }
 
@@ -131,29 +130,23 @@ model Assessment {
   title          String
   description    String?
   type           AssessmentType
-
   subjectId      String?
-  subject        Subject?       @relation(fields: [subjectId], references: [id])
-
+  subject        Subject?     @relation(fields: [subjectId], references: [id])
   createdById    String?
-  creator        User?          @relation("assessment_creator", fields: [createdById], references: [id])
-
+  creator        User?        @relation("assessment_creator", fields: [createdById], references: [id])
   passcodeHash   String?
   durationMin    Int?
   startAt        DateTime?
   endAt          DateTime?
   maxMarks       Int?
-
-  // questions schema stored as JSON for flexibility; can be normalized later
   questionsJson  Json?
-
   attempts       AssessmentAttempt[]
-  calendarEvent  CalendarEvent?   @relation("assessment_to_event")
-  calendarEventId String?
 
-  createdAt      DateTime       @default(now())
+  // 👇 OPTIONAL — linked CalendarEvent must enforce the constraint on the other side
+  calendarEvent  CalendarEvent?
+
+  createdAt      DateTime     @default(now())
 }
-
 /// Attempts by students for assessments
 model AssessmentAttempt {
   id            String       @id @default(uuid())
@@ -167,7 +160,7 @@ model AssessmentAttempt {
   submittedAt   DateTime?
   score         Float?
   status        AttemptStatus @default(IN_PROGRESS)
-  attemptData   Json?         // answers, code submissions, etc
+  attemptData   Json?
   cameraOn      Boolean?
   micOn         Boolean?
 
@@ -196,7 +189,7 @@ model Assignment {
   submissions  AssignmentSubmission[]
 }
 
-/// Student groups for group assignments
+/// Student groups
 model Group {
   id         String         @id @default(uuid())
   name       String?
@@ -216,19 +209,19 @@ model GroupMember {
   userId   String
   user     User    @relation(fields: [userId], references: [id])
 
-  role     String? // "member" | "leader"
+  role     String?
   joinedAt DateTime @default(now())
 
   @@unique([groupId, userId])
 }
 
-/// Assignment submissions (individual or group)
+/// Assignment submissions
 model AssignmentSubmission {
   id            String   @id @default(uuid())
   assignmentId  String
   assignment    Assignment @relation(fields: [assignmentId], references: [id])
 
-  submittedById String?  // nullable when group submission
+  submittedById String?
   submittedBy   User?    @relation(fields: [submittedById], references: [id])
 
   groupId       String?
@@ -242,7 +235,6 @@ model AssignmentSubmission {
   files         AssignmentSubmissionFile[]
 }
 
-/// Join table: many files can be attached to a submission
 model AssignmentSubmissionFile {
   id           String   @id @default(uuid())
   submissionId String
@@ -252,7 +244,7 @@ model AssignmentSubmissionFile {
   file         File     @relation(fields: [fileId], references: [id])
 }
 
-/// Labs / rooms that can be booked
+/// Labs
 model Lab {
   id        String   @id @default(uuid())
   name      String
@@ -265,7 +257,7 @@ model Lab {
   events    CalendarEvent[]
 }
 
-/// Calendar events — used for lab-evals / bookings
+/// Calendar events
 model CalendarEvent {
   id           String   @id @default(uuid())
   title        String
@@ -274,25 +266,23 @@ model CalendarEvent {
   subjectId    String?
   subject      Subject? @relation(fields: [subjectId], references: [id])
 
-  assessmentId   String?
-  assessment     Assessment? @relation("assessment_to_event", fields: [assessmentId], references: [id])
+  // 👇 REQUIRED — this is the side with fields + references
+  assessmentId String   @unique
+  assessment   Assessment @relation(fields: [assessmentId], references: [id])
 
   startAt      DateTime
   endAt        DateTime
 
   createdById  String?
-  creator      User?    @relation("event_creator", fields: [createdById], references: [id])
+  creator      User? @relation("event_creator", fields: [createdById], references: [id])
 
   labId        String?
-  lab          Lab?     @relation(fields: [labId], references: [id])
+  lab          Lab? @relation(fields: [labId], references: [id])
 
   branches     CalendarEventBranch[]
-  createdAt    DateTime  @default(now())
-
-  // NOTE: preventing overlapping bookings must be enforced at the API/backend layer
+  createdAt    DateTime @default(now())
 }
 
-/// Join table: which branches an event applies to
 model CalendarEventBranch {
   id              String         @id @default(uuid())
   calendarEventId String
@@ -304,7 +294,7 @@ model CalendarEventBranch {
   @@unique([calendarEventId, branchId])
 }
 
-/// Teacher salary records
+/// Teacher salary
 model TeacherSalary {
   id         String   @id @default(uuid())
   teacherId  String
@@ -319,7 +309,7 @@ model TeacherSalary {
   createdAt  DateTime @default(now())
 }
 
-/// School fee records
+/// School fee
 model Fee {
   id        String   @id @default(uuid())
   studentId String
@@ -329,4 +319,3 @@ model Fee {
   paid      Boolean  @default(false)
   createdAt DateTime @default(now())
 }
-
