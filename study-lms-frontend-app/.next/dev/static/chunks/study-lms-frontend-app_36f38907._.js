@@ -178,6 +178,7 @@ __turbopack_context__.s([
     "default",
     ()=>EvaluateResultsPage
 ]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = /*#__PURE__*/ __turbopack_context__.i("[project]/study-lms-frontend-app/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/study-lms-frontend-app/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/study-lms-frontend-app/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/study-lms-frontend-app/components/ui/card.tsx [app-client] (ecmascript)");
@@ -199,11 +200,62 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
+const API_URL = __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 function EvaluateResultsPage() {
     _s();
     const [selectedAssessment, setSelectedAssessment] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const [filterType, setFilterType] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("all");
     const [results, setResults] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$lib$2f$mock$2d$data$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["mockStudentResults"]);
+    const [isLoading, setIsLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
+    // When an assessment is selected, try to load attempts from backend to overlay real data.
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "EvaluateResultsPage.useEffect": ()=>{
+            if (!selectedAssessment) return;
+            let cancelled = false;
+            setIsLoading(true);
+            setError(null);
+            async function loadAttempts() {
+                try {
+                    const res = await fetch(`${API_URL}/api/assessments/${selectedAssessment}/attempts`);
+                    if (!res.ok) {
+                        setIsLoading(false);
+                        return;
+                    }
+                    const attempts = await res.json();
+                    if (cancelled) return;
+                    // Map Prisma AssessmentAttempt records into the StudentResult shape used by this page.
+                    const mapped = attempts.map({
+                        "EvaluateResultsPage.useEffect.loadAttempts.mapped": (attempt, index)=>({
+                                id: attempt.id || `attempt_${index}`,
+                                studentId: attempt.studentId,
+                                assessmentId: attempt.assessmentId,
+                                marksObtained: attempt.score ?? 0,
+                                totalMarks: 100,
+                                percentage: attempt.score != null ? attempt.score / 100 * 100 : 0,
+                                status: attempt.status === "EVALUATED" ? "completed" : "pending",
+                                submittedAt: attempt.submittedAt || attempt.startedAt || "",
+                                feedback: undefined
+                            })
+                    }["EvaluateResultsPage.useEffect.loadAttempts.mapped"]);
+                    setResults(mapped);
+                } catch (e) {
+                    console.error("Failed to load assessment attempts", e);
+                    if (!cancelled) setError("Could not load attempts from server; showing mock data.");
+                } finally{
+                    if (!cancelled) setIsLoading(false);
+                }
+            }
+            void loadAttempts();
+            return ({
+                "EvaluateResultsPage.useEffect": ()=>{
+                    cancelled = true;
+                }
+            })["EvaluateResultsPage.useEffect"];
+        }
+    }["EvaluateResultsPage.useEffect"], [
+        selectedAssessment
+    ]);
     const filteredResults = filterType === "all" ? results : filterType === "pending" ? results.filter((r)=>r.status === "pending") : results.filter((r)=>r.status === "completed");
     const assessmentResults = selectedAssessment ? filteredResults.filter((r)=>r.assessmentId === selectedAssessment) : filteredResults;
     const handleUpdateMarks = (resultId, marks)=>{
@@ -212,6 +264,24 @@ function EvaluateResultsPage() {
                 marksObtained: marks,
                 status: "completed"
             } : r));
+        // Best-effort backend grading update
+        const target = results.find((r)=>r.id === resultId);
+        if (!target) return;
+        void (async ()=>{
+            try {
+                await fetch(`${API_URL}/api/assessment-attempts/${resultId}/grade`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        score: marks
+                    })
+                });
+            } catch (e) {
+                console.error("Failed to update grade on server", e);
+            }
+        })();
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "p-6 space-y-6",
@@ -226,7 +296,7 @@ function EvaluateResultsPage() {
                                 children: "Evaluate & Grade Results"
                             }, void 0, false, {
                                 fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                lineNumber: 38,
+                                lineNumber: 108,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -234,13 +304,13 @@ function EvaluateResultsPage() {
                                 children: "Review and grade student assessments"
                             }, void 0, false, {
                                 fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                lineNumber: 39,
+                                lineNumber: 109,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                        lineNumber: 37,
+                        lineNumber: 107,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -250,21 +320,29 @@ function EvaluateResultsPage() {
                                 className: "w-4 h-4 mr-2"
                             }, void 0, false, {
                                 fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                lineNumber: 42,
+                                lineNumber: 112,
                                 columnNumber: 11
                             }, this),
                             "Export Results"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                        lineNumber: 41,
+                        lineNumber: 111,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                lineNumber: 36,
+                lineNumber: 106,
                 columnNumber: 7
+            }, this),
+            error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                className: "text-sm text-destructive",
+                children: error
+            }, void 0, false, {
+                fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
+                lineNumber: 118,
+                columnNumber: 17
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "grid grid-cols-1 md:grid-cols-3 gap-4",
@@ -283,7 +361,7 @@ function EvaluateResultsPage() {
                                                 children: "Total Submissions"
                                             }, void 0, false, {
                                                 fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                                lineNumber: 53,
+                                                lineNumber: 124,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -291,36 +369,36 @@ function EvaluateResultsPage() {
                                                 children: results.length
                                             }, void 0, false, {
                                                 fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                                lineNumber: 54,
+                                                lineNumber: 125,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                        lineNumber: 52,
+                                        lineNumber: 123,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2d$big$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle$3e$__["CheckCircle"], {
                                         className: "w-8 h-8 text-primary/60"
                                     }, void 0, false, {
                                         fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                        lineNumber: 56,
+                                        lineNumber: 127,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                lineNumber: 51,
+                                lineNumber: 122,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                            lineNumber: 50,
+                            lineNumber: 121,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                        lineNumber: 49,
+                        lineNumber: 120,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -337,7 +415,7 @@ function EvaluateResultsPage() {
                                                 children: "Graded"
                                             }, void 0, false, {
                                                 fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                                lineNumber: 64,
+                                                lineNumber: 135,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -345,36 +423,36 @@ function EvaluateResultsPage() {
                                                 children: results.filter((r)=>r.status === "completed").length
                                             }, void 0, false, {
                                                 fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                                lineNumber: 65,
+                                                lineNumber: 136,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                        lineNumber: 63,
+                                        lineNumber: 134,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2d$big$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle$3e$__["CheckCircle"], {
                                         className: "w-8 h-8 text-green-600/60 dark:text-green-400/60"
                                     }, void 0, false, {
                                         fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                        lineNumber: 69,
+                                        lineNumber: 140,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                lineNumber: 62,
+                                lineNumber: 133,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                            lineNumber: 61,
+                            lineNumber: 132,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                        lineNumber: 60,
+                        lineNumber: 131,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -391,7 +469,7 @@ function EvaluateResultsPage() {
                                                 children: "Pending"
                                             }, void 0, false, {
                                                 fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                                lineNumber: 77,
+                                                lineNumber: 148,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -399,42 +477,42 @@ function EvaluateResultsPage() {
                                                 children: results.filter((r)=>r.status === "pending").length
                                             }, void 0, false, {
                                                 fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                                lineNumber: 78,
+                                                lineNumber: 149,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                        lineNumber: 76,
+                                        lineNumber: 147,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$alert$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__AlertCircle$3e$__["AlertCircle"], {
                                         className: "w-8 h-8 text-yellow-600/60 dark:text-yellow-400/60"
                                     }, void 0, false, {
                                         fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                        lineNumber: 82,
+                                        lineNumber: 153,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                lineNumber: 75,
+                                lineNumber: 146,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                            lineNumber: 74,
+                            lineNumber: 145,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                        lineNumber: 73,
+                        lineNumber: 144,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                lineNumber: 48,
+                lineNumber: 119,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -447,14 +525,14 @@ function EvaluateResultsPage() {
                                 className: "w-4 h-4"
                             }, void 0, false, {
                                 fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                lineNumber: 91,
+                                lineNumber: 162,
                                 columnNumber: 11
                             }, this),
                             "Filter Results"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                        lineNumber: 90,
+                        lineNumber: 161,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -467,7 +545,7 @@ function EvaluateResultsPage() {
                                 children: "All Results"
                             }, void 0, false, {
                                 fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                lineNumber: 95,
+                                lineNumber: 166,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -477,7 +555,7 @@ function EvaluateResultsPage() {
                                 children: "Pending Grading"
                             }, void 0, false, {
                                 fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                lineNumber: 102,
+                                lineNumber: 173,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -487,13 +565,13 @@ function EvaluateResultsPage() {
                                 children: "Graded"
                             }, void 0, false, {
                                 fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                lineNumber: 109,
+                                lineNumber: 180,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                        lineNumber: 94,
+                        lineNumber: 165,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -503,7 +581,7 @@ function EvaluateResultsPage() {
                                 children: "Assessment"
                             }, void 0, false, {
                                 fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                lineNumber: 120,
+                                lineNumber: 191,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -516,7 +594,7 @@ function EvaluateResultsPage() {
                                         children: "All Assessments"
                                     }, void 0, false, {
                                         fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                        lineNumber: 126,
+                                        lineNumber: 197,
                                         columnNumber: 13
                                     }, this),
                                     __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$lib$2f$mock$2d$data$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["mockAssessments"].map((assess)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -524,25 +602,25 @@ function EvaluateResultsPage() {
                                             children: assess.title
                                         }, assess.id, false, {
                                             fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                            lineNumber: 128,
+                                            lineNumber: 199,
                                             columnNumber: 15
                                         }, this))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                lineNumber: 121,
+                                lineNumber: 192,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                        lineNumber: 119,
+                        lineNumber: 190,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                lineNumber: 89,
+                lineNumber: 160,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -554,23 +632,20 @@ function EvaluateResultsPage() {
                                 children: "Results"
                             }, void 0, false, {
                                 fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                lineNumber: 139,
+                                lineNumber: 210,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardDescription"], {
-                                children: [
-                                    assessmentResults.length,
-                                    " submissions"
-                                ]
-                            }, void 0, true, {
+                                children: isLoading ? "Loading submissions..." : `${assessmentResults.length} submissions`
+                            }, void 0, false, {
                                 fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                lineNumber: 140,
+                                lineNumber: 211,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                        lineNumber: 138,
+                        lineNumber: 209,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -588,7 +663,7 @@ function EvaluateResultsPage() {
                                                     children: "Student ID"
                                                 }, void 0, false, {
                                                     fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                                    lineNumber: 147,
+                                                    lineNumber: 220,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -596,7 +671,7 @@ function EvaluateResultsPage() {
                                                     children: "Assessment"
                                                 }, void 0, false, {
                                                     fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                                    lineNumber: 148,
+                                                    lineNumber: 221,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -604,7 +679,7 @@ function EvaluateResultsPage() {
                                                     children: "Submitted"
                                                 }, void 0, false, {
                                                     fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                                    lineNumber: 149,
+                                                    lineNumber: 222,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -612,7 +687,7 @@ function EvaluateResultsPage() {
                                                     children: "Marks"
                                                 }, void 0, false, {
                                                     fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                                    lineNumber: 150,
+                                                    lineNumber: 223,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -620,7 +695,7 @@ function EvaluateResultsPage() {
                                                     children: "Status"
                                                 }, void 0, false, {
                                                     fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                                    lineNumber: 151,
+                                                    lineNumber: 224,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -628,18 +703,18 @@ function EvaluateResultsPage() {
                                                     children: "Action"
                                                 }, void 0, false, {
                                                     fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                                    lineNumber: 152,
+                                                    lineNumber: 225,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                            lineNumber: 146,
+                                            lineNumber: 219,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                        lineNumber: 145,
+                                        lineNumber: 218,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
@@ -651,7 +726,7 @@ function EvaluateResultsPage() {
                                                         children: result.studentId
                                                     }, void 0, false, {
                                                         fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                                        lineNumber: 158,
+                                                        lineNumber: 231,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -662,7 +737,7 @@ function EvaluateResultsPage() {
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                                        lineNumber: 159,
+                                                        lineNumber: 232,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -670,7 +745,7 @@ function EvaluateResultsPage() {
                                                         children: result.submittedAt
                                                     }, void 0, false, {
                                                         fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                                        lineNumber: 160,
+                                                        lineNumber: 233,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -685,7 +760,7 @@ function EvaluateResultsPage() {
                                                                     className: "w-16 h-8 px-2 py-0 text-xs bg-input border-border/30 text-center"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                                                    lineNumber: 163,
+                                                                    lineNumber: 236,
                                                                     columnNumber: 25
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -696,18 +771,18 @@ function EvaluateResultsPage() {
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                                                    lineNumber: 169,
+                                                                    lineNumber: 242,
                                                                     columnNumber: 25
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                                            lineNumber: 162,
+                                                            lineNumber: 235,
                                                             columnNumber: 23
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                                        lineNumber: 161,
+                                                        lineNumber: 234,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -718,12 +793,12 @@ function EvaluateResultsPage() {
                                                             children: result.status === "completed" ? "Graded" : "Pending"
                                                         }, void 0, false, {
                                                             fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                                            lineNumber: 173,
+                                                            lineNumber: 246,
                                                             columnNumber: 23
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                                        lineNumber: 172,
+                                                        lineNumber: 245,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -735,55 +810,55 @@ function EvaluateResultsPage() {
                                                             children: "Review"
                                                         }, void 0, false, {
                                                             fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                                            lineNumber: 178,
+                                                            lineNumber: 251,
                                                             columnNumber: 23
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                                        lineNumber: 177,
+                                                        lineNumber: 250,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, result.id, true, {
                                                 fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                                lineNumber: 157,
+                                                lineNumber: 230,
                                                 columnNumber: 19
                                             }, this))
                                     }, void 0, false, {
                                         fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                        lineNumber: 155,
+                                        lineNumber: 228,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                                lineNumber: 144,
+                                lineNumber: 217,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                            lineNumber: 143,
+                            lineNumber: 216,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                        lineNumber: 142,
+                        lineNumber: 215,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-                lineNumber: 137,
+                lineNumber: 208,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/study-lms-frontend-app/app/teacher/evaluate-results/page.tsx",
-        lineNumber: 34,
+        lineNumber: 104,
         columnNumber: 5
     }, this);
 }
-_s(EvaluateResultsPage, "lsWaJMLd6JlF5ehMYT3WsY44omM=");
+_s(EvaluateResultsPage, "TW2uIjx0kI7pstl9m9+43NRyino=");
 _c = EvaluateResultsPage;
 var _c;
 __turbopack_context__.k.register(_c, "EvaluateResultsPage");

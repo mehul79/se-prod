@@ -641,6 +641,7 @@ __turbopack_context__.s([
     "default",
     ()=>LabSchedulingPage
 ]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = /*#__PURE__*/ __turbopack_context__.i("[project]/study-lms-frontend-app/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/study-lms-frontend-app/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/study-lms-frontend-app/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/study-lms-frontend-app/components/ui/card.tsx [app-client] (ecmascript)");
@@ -649,7 +650,6 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$
 var __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/study-lms-frontend-app/components/ui/badge.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/study-lms-frontend-app/components/ui/dialog.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/study-lms-frontend-app/components/ui/select.tsx [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$lib$2f$mock$2d$data$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/study-lms-frontend-app/lib/mock-data.ts [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$calendar$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Calendar$3e$__ = __turbopack_context__.i("[project]/study-lms-frontend-app/node_modules/lucide-react/dist/esm/icons/calendar.js [app-client] (ecmascript) <export default as Calendar>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$clock$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Clock$3e$__ = __turbopack_context__.i("[project]/study-lms-frontend-app/node_modules/lucide-react/dist/esm/icons/clock.js [app-client] (ecmascript) <export default as Clock>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$map$2d$pin$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__MapPin$3e$__ = __turbopack_context__.i("[project]/study-lms-frontend-app/node_modules/lucide-react/dist/esm/icons/map-pin.js [app-client] (ecmascript) <export default as MapPin>");
@@ -658,7 +658,6 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$
 ;
 var _s = __turbopack_context__.k.signature();
 "use client";
-;
 ;
 ;
 ;
@@ -680,10 +679,26 @@ const branches = [
     "CE",
     "ELE"
 ];
+const API_URL = __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
+const statusColors = {
+    scheduled: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200",
+    ongoing: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
+    completed: "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200"
+};
+const eventTypeColors = {
+    lab: "bg-primary/10 text-primary",
+    presentation: "bg-accent/10 text-accent",
+    viva: "bg-destructive/10 text-destructive",
+    demo: "bg-yellow-500/10 text-yellow-700 dark:text-yellow-400"
+};
 function LabSchedulingPage() {
     _s();
-    const [events, setEvents] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$lib$2f$mock$2d$data$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["mockLabEvents"]);
+    const [events, setEvents] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
     const [isOpen, setIsOpen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [isLoading, setIsLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
+    const [viewMode, setViewMode] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("list");
+    const [assessments, setAssessments] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
     const [formData, setFormData] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])({
         title: "",
         description: "",
@@ -693,8 +708,53 @@ function LabSchedulingPage() {
         eventType: "lab",
         location: "",
         selectedBranches: [],
-        capacity: ""
+        capacity: "",
+        assessmentId: ""
     });
+    // Fetch events from backend on mount
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "LabSchedulingPage.useEffect": ()=>{
+            let cancelled = false;
+            async function loadEvents() {
+                setIsLoading(true);
+                setError(null);
+                try {
+                    const res = await fetch(`${API_URL}/api/lab-events`);
+                    if (!res.ok) {
+                        throw new Error("Failed to load events");
+                    }
+                    const data = await res.json();
+                    if (!cancelled) {
+                        setEvents(data);
+                    }
+                } catch (e) {
+                    console.error(e);
+                    if (!cancelled) setError("Could not load lab events from server");
+                } finally{
+                    if (!cancelled) setIsLoading(false);
+                }
+            }
+            async function loadAssessments() {
+                try {
+                    const res = await fetch(`${API_URL}/api/assessments`);
+                    if (!res.ok) return;
+                    const data = await res.json();
+                    if (!cancelled) {
+                        setAssessments(data);
+                    }
+                } catch (e) {
+                    console.error("Could not load assessments for lab scheduling", e);
+                }
+            }
+            void loadEvents();
+            void loadAssessments();
+            return ({
+                "LabSchedulingPage.useEffect": ()=>{
+                    cancelled = true;
+                }
+            })["LabSchedulingPage.useEffect"];
+        }
+    }["LabSchedulingPage.useEffect"], []);
     const handleInputChange = (e)=>{
         const { name, value } = e.target;
         setFormData((prev)=>({
@@ -711,45 +771,79 @@ function LabSchedulingPage() {
                 ]
             }));
     };
-    const handleCreateEvent = (e)=>{
+    const handleCreateEvent = async (e)=>{
         e.preventDefault();
-        const newEvent = {
-            id: `lab_${Date.now()}`,
-            title: formData.title,
-            description: formData.description,
-            date: formData.date,
-            time: formData.time,
-            duration: Number.parseInt(formData.duration),
-            eventType: formData.eventType,
-            location: formData.location,
-            branches: formData.selectedBranches,
-            status: "scheduled",
-            capacity: Number.parseInt(formData.capacity),
-            enrolled: 0
-        };
-        setEvents([
-            ...events,
-            newEvent
-        ]);
-        setIsOpen(false);
-        setFormData({
-            title: "",
-            description: "",
-            date: "",
-            time: "",
-            duration: "",
-            eventType: "lab",
-            location: "",
-            selectedBranches: [],
-            capacity: ""
-        });
+        setIsLoading(true);
+        setError(null);
+        try {
+            const payload = {
+                title: formData.title,
+                description: formData.description,
+                date: formData.date,
+                time: formData.time,
+                duration: Number.parseInt(formData.duration || "60"),
+                eventType: formData.eventType,
+                location: formData.location,
+                branches: formData.selectedBranches,
+                capacity: formData.capacity ? Number.parseInt(formData.capacity) : undefined,
+                assessmentId: formData.assessmentId || undefined
+            };
+            const res = await fetch(`${API_URL}/api/lab-events`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            });
+            if (!res.ok) {
+                throw new Error("Failed to create event");
+            }
+            const created = await res.json();
+            setEvents((prev)=>[
+                    ...prev,
+                    created
+                ]);
+            setIsOpen(false);
+            setFormData({
+                title: "",
+                description: "",
+                date: "",
+                time: "",
+                duration: "",
+                eventType: "lab",
+                location: "",
+                selectedBranches: [],
+                capacity: "",
+                assessmentId: ""
+            });
+        } catch (err) {
+            console.error(err);
+            setError("Could not create lab event");
+        } finally{
+            setIsLoading(false);
+        }
     };
-    const eventTypeColors = {
-        lab: "bg-primary/10 text-primary",
-        presentation: "bg-accent/10 text-accent",
-        viva: "bg-destructive/10 text-destructive",
-        demo: "bg-yellow-500/10 text-yellow-700 dark:text-yellow-400"
-    };
+    // Simple grouping by date for a calendar-like view
+    const eventsByDate = (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMemo"])({
+        "LabSchedulingPage.useMemo[eventsByDate]": ()=>{
+            const map = new Map();
+            for (const ev of events){
+                const key = ev.date;
+                if (!map.has(key)) map.set(key, []);
+                map.get(key).push(ev);
+            }
+            for (const [, value] of map){
+                value.sort({
+                    "LabSchedulingPage.useMemo[eventsByDate]": (a, b)=>a.time.localeCompare(b.time)
+                }["LabSchedulingPage.useMemo[eventsByDate]"]);
+            }
+            return Array.from(map.entries()).sort({
+                "LabSchedulingPage.useMemo[eventsByDate]": (a, b)=>a[0].localeCompare(b[0])
+            }["LabSchedulingPage.useMemo[eventsByDate]"]);
+        }
+    }["LabSchedulingPage.useMemo[eventsByDate]"], [
+        events
+    ]);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "p-6 space-y-6",
         children: [
@@ -763,7 +857,7 @@ function LabSchedulingPage() {
                                 children: "Lab Scheduling"
                             }, void 0, false, {
                                 fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                lineNumber: 92,
+                                lineNumber: 194,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -771,83 +865,122 @@ function LabSchedulingPage() {
                                 children: "Create and manage lab events, presentations, and vivas"
                             }, void 0, false, {
                                 fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                lineNumber: 93,
+                                lineNumber: 195,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                        lineNumber: 91,
+                        lineNumber: 193,
                         columnNumber: 9
                     }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
-                        onClick: ()=>setIsOpen(true),
-                        className: "bg-primary text-primary-foreground hover:bg-primary/90",
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "flex items-center gap-2",
                         children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$plus$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Plus$3e$__["Plus"], {
-                                className: "w-4 h-4 mr-2"
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                variant: viewMode === "list" ? "default" : "outline",
+                                size: "sm",
+                                onClick: ()=>setViewMode("list"),
+                                children: "List"
                             }, void 0, false, {
                                 fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                lineNumber: 96,
+                                lineNumber: 198,
                                 columnNumber: 11
                             }, this),
-                            "New Event"
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                variant: viewMode === "calendar" ? "default" : "outline",
+                                size: "sm",
+                                onClick: ()=>setViewMode("calendar"),
+                                children: "Calendar"
+                            }, void 0, false, {
+                                fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
+                                lineNumber: 205,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                onClick: ()=>setIsOpen(true),
+                                className: "bg-primary text-primary-foreground hover:bg-primary/90",
+                                disabled: isLoading,
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$plus$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Plus$3e$__["Plus"], {
+                                        className: "w-4 h-4 mr-2"
+                                    }, void 0, false, {
+                                        fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
+                                        lineNumber: 217,
+                                        columnNumber: 13
+                                    }, this),
+                                    "New Event"
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
+                                lineNumber: 212,
+                                columnNumber: 11
+                            }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                        lineNumber: 95,
+                        lineNumber: 197,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                lineNumber: 90,
+                lineNumber: 192,
                 columnNumber: 7
             }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                className: "text-sm text-destructive",
+                children: error
+            }, void 0, false, {
+                fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
+                lineNumber: 223,
+                columnNumber: 17
+            }, this),
+            viewMode === "list" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "space-y-3",
-                children: events.map((event)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
-                        className: "border-border/50 hover:border-primary/30 transition-colors",
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
-                            className: "p-4",
-                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "flex items-start justify-between gap-4",
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                children: [
+                    events.map((event)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
+                            className: "border-border/50 hover:border-primary/30 transition-colors",
+                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
+                                className: "p-4",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "flex items-start justify-between gap-4",
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "flex-1",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "flex items-center gap-2 mb-2",
                                                 children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                                        className: "font-semibold text-foreground",
-                                                        children: event.title
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                        lineNumber: 109,
-                                                        columnNumber: 21
-                                                    }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
                                                         className: eventTypeColors[event.eventType],
                                                         children: event.eventType.charAt(0).toUpperCase() + event.eventType.slice(1)
                                                     }, void 0, false, {
                                                         fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                        lineNumber: 110,
-                                                        columnNumber: 21
+                                                        lineNumber: 234,
+                                                        columnNumber: 23
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
+                                                        variant: "outline",
+                                                        className: statusColors[event.status],
+                                                        children: event.status.charAt(0).toUpperCase() + event.status.slice(1)
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
+                                                        lineNumber: 237,
+                                                        columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                lineNumber: 108,
-                                                columnNumber: 19
+                                                lineNumber: 233,
+                                                columnNumber: 21
                                             }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                className: "text-sm text-muted-foreground mb-3",
-                                                children: event.description
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                                className: "font-semibold text-foreground mb-2",
+                                                children: event.title
                                             }, void 0, false, {
                                                 fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                lineNumber: 114,
-                                                columnNumber: 19
+                                                lineNumber: 241,
+                                                columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "grid grid-cols-2 md:grid-cols-4 gap-3 text-sm",
@@ -859,22 +992,22 @@ function LabSchedulingPage() {
                                                                 className: "w-4 h-4 text-muted-foreground"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                                lineNumber: 118,
-                                                                columnNumber: 23
+                                                                lineNumber: 245,
+                                                                columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                 className: "text-muted-foreground",
                                                                 children: event.date
                                                             }, void 0, false, {
                                                                 fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                                lineNumber: 119,
-                                                                columnNumber: 23
+                                                                lineNumber: 246,
+                                                                columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                        lineNumber: 117,
-                                                        columnNumber: 21
+                                                        lineNumber: 244,
+                                                        columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         className: "flex items-center gap-1",
@@ -883,22 +1016,22 @@ function LabSchedulingPage() {
                                                                 className: "w-4 h-4 text-muted-foreground"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                                lineNumber: 122,
-                                                                columnNumber: 23
+                                                                lineNumber: 249,
+                                                                columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                 className: "text-muted-foreground",
                                                                 children: event.time
                                                             }, void 0, false, {
                                                                 fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                                lineNumber: 123,
-                                                                columnNumber: 23
+                                                                lineNumber: 250,
+                                                                columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                        lineNumber: 121,
-                                                        columnNumber: 21
+                                                        lineNumber: 248,
+                                                        columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         className: "flex items-center gap-1",
@@ -907,22 +1040,22 @@ function LabSchedulingPage() {
                                                                 className: "w-4 h-4 text-muted-foreground"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                                lineNumber: 126,
-                                                                columnNumber: 23
+                                                                lineNumber: 253,
+                                                                columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                 className: "text-muted-foreground",
                                                                 children: event.location
                                                             }, void 0, false, {
                                                                 fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                                lineNumber: 127,
-                                                                columnNumber: 23
+                                                                lineNumber: 254,
+                                                                columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                        lineNumber: 125,
-                                                        columnNumber: 21
+                                                        lineNumber: 252,
+                                                        columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         className: "flex items-center gap-1",
@@ -931,32 +1064,32 @@ function LabSchedulingPage() {
                                                                 className: "w-4 h-4 text-muted-foreground"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                                lineNumber: 130,
-                                                                columnNumber: 23
+                                                                lineNumber: 257,
+                                                                columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                 className: "text-muted-foreground",
                                                                 children: [
-                                                                    event.enrolled,
+                                                                    event.enrolled ?? 0,
                                                                     "/",
-                                                                    event.capacity
+                                                                    event.capacity ?? "-"
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                                lineNumber: 131,
-                                                                columnNumber: 23
+                                                                lineNumber: 258,
+                                                                columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                        lineNumber: 129,
-                                                        columnNumber: 21
+                                                        lineNumber: 256,
+                                                        columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                lineNumber: 116,
-                                                columnNumber: 19
+                                                lineNumber: 243,
+                                                columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "mt-3 flex gap-2",
@@ -966,68 +1099,185 @@ function LabSchedulingPage() {
                                                         children: branch
                                                     }, branch, false, {
                                                         fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                        lineNumber: 139,
-                                                        columnNumber: 23
+                                                        lineNumber: 266,
+                                                        columnNumber: 25
                                                     }, this))
                                             }, void 0, false, {
                                                 fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                lineNumber: 137,
-                                                columnNumber: 19
+                                                lineNumber: 264,
+                                                columnNumber: 21
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                        lineNumber: 107,
-                                        columnNumber: 17
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "flex gap-2",
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
-                                                variant: "outline",
-                                                size: "sm",
-                                                children: "Edit"
-                                            }, void 0, false, {
-                                                fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                lineNumber: 146,
-                                                columnNumber: 19
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
-                                                variant: "outline",
-                                                size: "sm",
-                                                className: "text-destructive bg-transparent",
-                                                children: "Delete"
-                                            }, void 0, false, {
-                                                fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                lineNumber: 149,
-                                                columnNumber: 19
-                                            }, this)
-                                        ]
-                                    }, void 0, true, {
-                                        fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                        lineNumber: 145,
-                                        columnNumber: 17
+                                        lineNumber: 232,
+                                        columnNumber: 19
                                     }, this)
-                                ]
-                            }, void 0, true, {
+                                }, void 0, false, {
+                                    fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
+                                    lineNumber: 231,
+                                    columnNumber: 17
+                                }, this)
+                            }, void 0, false, {
                                 fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                lineNumber: 106,
+                                lineNumber: 230,
                                 columnNumber: 15
                             }, this)
+                        }, event.id, false, {
+                            fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
+                            lineNumber: 229,
+                            columnNumber: 13
+                        }, this)),
+                    events.length === 0 && !isLoading && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                        className: "text-sm text-muted-foreground",
+                        children: "No lab events yet. Create your first event above."
+                    }, void 0, false, {
+                        fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
+                        lineNumber: 278,
+                        columnNumber: 13
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
+                lineNumber: 227,
+                columnNumber: 9
+            }, this),
+            viewMode === "calendar" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
+                className: "border-border/50",
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
+                    className: "p-4 space-y-4",
+                    children: [
+                        eventsByDate.length === 0 && !isLoading && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                            className: "text-sm text-muted-foreground",
+                            children: "No lab events scheduled."
                         }, void 0, false, {
                             fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                            lineNumber: 105,
+                            lineNumber: 288,
+                            columnNumber: 15
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "grid grid-cols-1 md:grid-cols-2 gap-4",
+                            children: eventsByDate.map(([date, items])=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "p-4 bg-secondary/30 rounded-lg border border-border/30",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "flex items-center gap-2 mb-2",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$calendar$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Calendar$3e$__["Calendar"], {
+                                                    className: "w-4 h-4 text-muted-foreground"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
+                                                    lineNumber: 297,
+                                                    columnNumber: 21
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    className: "font-semibold text-foreground",
+                                                    children: date
+                                                }, void 0, false, {
+                                                    fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
+                                                    lineNumber: 298,
+                                                    columnNumber: 21
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
+                                            lineNumber: 296,
+                                            columnNumber: 19
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "space-y-2",
+                                            children: items.map((ev)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "p-2 rounded-md border border-border/40 bg-background/60 flex items-center justify-between text-sm",
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            children: [
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                    className: "font-medium text-foreground line-clamp-1",
+                                                                    children: ev.title
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
+                                                                    lineNumber: 307,
+                                                                    columnNumber: 27
+                                                                }, this),
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                    className: "flex items-center gap-2 text-xs text-muted-foreground",
+                                                                    children: [
+                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$clock$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Clock$3e$__["Clock"], {
+                                                                            className: "w-3 h-3"
+                                                                        }, void 0, false, {
+                                                                            fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
+                                                                            lineNumber: 309,
+                                                                            columnNumber: 29
+                                                                        }, this),
+                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                            children: ev.time
+                                                                        }, void 0, false, {
+                                                                            fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
+                                                                            lineNumber: 310,
+                                                                            columnNumber: 29
+                                                                        }, this),
+                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                            children: [
+                                                                                "• ",
+                                                                                ev.location
+                                                                            ]
+                                                                        }, void 0, true, {
+                                                                            fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
+                                                                            lineNumber: 311,
+                                                                            columnNumber: 29
+                                                                        }, this)
+                                                                    ]
+                                                                }, void 0, true, {
+                                                                    fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
+                                                                    lineNumber: 308,
+                                                                    columnNumber: 27
+                                                                }, this)
+                                                            ]
+                                                        }, void 0, true, {
+                                                            fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
+                                                            lineNumber: 306,
+                                                            columnNumber: 25
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
+                                                            className: eventTypeColors[ev.eventType],
+                                                            children: ev.eventType
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
+                                                            lineNumber: 314,
+                                                            columnNumber: 25
+                                                        }, this)
+                                                    ]
+                                                }, ev.id, true, {
+                                                    fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
+                                                    lineNumber: 302,
+                                                    columnNumber: 23
+                                                }, this))
+                                        }, void 0, false, {
+                                            fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
+                                            lineNumber: 300,
+                                            columnNumber: 19
+                                        }, this)
+                                    ]
+                                }, date, true, {
+                                    fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
+                                    lineNumber: 292,
+                                    columnNumber: 17
+                                }, this))
+                        }, void 0, false, {
+                            fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
+                            lineNumber: 290,
                             columnNumber: 13
                         }, this)
-                    }, event.id, false, {
-                        fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                        lineNumber: 104,
-                        columnNumber: 11
-                    }, this))
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
+                    lineNumber: 286,
+                    columnNumber: 11
+                }, this)
             }, void 0, false, {
                 fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                lineNumber: 102,
-                columnNumber: 7
+                lineNumber: 285,
+                columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Dialog"], {
                 open: isOpen,
@@ -1041,20 +1291,20 @@ function LabSchedulingPage() {
                                     children: "Create New Lab Event"
                                 }, void 0, false, {
                                     fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                    lineNumber: 163,
+                                    lineNumber: 329,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DialogDescription"], {
                                     children: "Schedule a new lab, presentation, or viva"
                                 }, void 0, false, {
                                     fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                    lineNumber: 164,
+                                    lineNumber: 330,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                            lineNumber: 162,
+                            lineNumber: 328,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -1072,7 +1322,7 @@ function LabSchedulingPage() {
                                                     children: "Title"
                                                 }, void 0, false, {
                                                     fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                    lineNumber: 171,
+                                                    lineNumber: 337,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -1084,13 +1334,13 @@ function LabSchedulingPage() {
                                                     required: true
                                                 }, void 0, false, {
                                                     fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                    lineNumber: 172,
+                                                    lineNumber: 338,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                            lineNumber: 170,
+                                            lineNumber: 336,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1101,7 +1351,7 @@ function LabSchedulingPage() {
                                                     children: "Event Type"
                                                 }, void 0, false, {
                                                     fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                    lineNumber: 182,
+                                                    lineNumber: 348,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Select"], {
@@ -1115,12 +1365,12 @@ function LabSchedulingPage() {
                                                             className: "bg-input border-border/30",
                                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectValue"], {}, void 0, false, {
                                                                 fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                                lineNumber: 188,
+                                                                lineNumber: 354,
                                                                 columnNumber: 21
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                            lineNumber: 187,
+                                                            lineNumber: 353,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -1129,30 +1379,106 @@ function LabSchedulingPage() {
                                                                     children: type.charAt(0).toUpperCase() + type.slice(1)
                                                                 }, type, false, {
                                                                     fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                                    lineNumber: 192,
+                                                                    lineNumber: 358,
                                                                     columnNumber: 23
                                                                 }, this))
                                                         }, void 0, false, {
                                                             fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                            lineNumber: 190,
+                                                            lineNumber: 356,
                                                             columnNumber: 19
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                    lineNumber: 183,
+                                                    lineNumber: 349,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                            lineNumber: 181,
+                                            lineNumber: 347,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                    lineNumber: 169,
+                                    lineNumber: 335,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "space-y-2",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                            className: "text-sm font-medium text-foreground",
+                                            children: "Linked Assessment (optional)"
+                                        }, void 0, false, {
+                                            fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
+                                            lineNumber: 369,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Select"], {
+                                            value: formData.assessmentId || "none",
+                                            onValueChange: (value)=>setFormData((prev)=>({
+                                                        ...prev,
+                                                        assessmentId: value === "none" ? "" : value
+                                                    })),
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectTrigger"], {
+                                                    className: "bg-input border-border/30",
+                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectValue"], {
+                                                        placeholder: "Select assessment"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
+                                                        lineNumber: 377,
+                                                        columnNumber: 19
+                                                    }, this)
+                                                }, void 0, false, {
+                                                    fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
+                                                    lineNumber: 376,
+                                                    columnNumber: 17
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectContent"], {
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
+                                                            value: "none",
+                                                            children: "No linked assessment"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
+                                                            lineNumber: 380,
+                                                            columnNumber: 19
+                                                        }, this),
+                                                        assessments.map((assessment)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
+                                                                value: assessment.id,
+                                                                children: assessment.title
+                                                            }, assessment.id, false, {
+                                                                fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
+                                                                lineNumber: 382,
+                                                                columnNumber: 21
+                                                            }, this))
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
+                                                    lineNumber: 379,
+                                                    columnNumber: 17
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
+                                            lineNumber: 370,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            className: "text-xs text-muted-foreground",
+                                            children: 'Assessments are created from the "Create Assessment" page.'
+                                        }, void 0, false, {
+                                            fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
+                                            lineNumber: 388,
+                                            columnNumber: 15
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
+                                    lineNumber: 368,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1163,7 +1489,7 @@ function LabSchedulingPage() {
                                             children: "Description"
                                         }, void 0, false, {
                                             fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                            lineNumber: 202,
+                                            lineNumber: 394,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
@@ -1175,13 +1501,13 @@ function LabSchedulingPage() {
                                             rows: 3
                                         }, void 0, false, {
                                             fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                            lineNumber: 203,
+                                            lineNumber: 395,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                    lineNumber: 201,
+                                    lineNumber: 393,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1195,7 +1521,7 @@ function LabSchedulingPage() {
                                                     children: "Date"
                                                 }, void 0, false, {
                                                     fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                    lineNumber: 216,
+                                                    lineNumber: 408,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -1207,13 +1533,13 @@ function LabSchedulingPage() {
                                                     required: true
                                                 }, void 0, false, {
                                                     fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                    lineNumber: 217,
+                                                    lineNumber: 409,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                            lineNumber: 215,
+                                            lineNumber: 407,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1224,7 +1550,7 @@ function LabSchedulingPage() {
                                                     children: "Time"
                                                 }, void 0, false, {
                                                     fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                    lineNumber: 227,
+                                                    lineNumber: 419,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -1236,13 +1562,13 @@ function LabSchedulingPage() {
                                                     required: true
                                                 }, void 0, false, {
                                                     fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                    lineNumber: 228,
+                                                    lineNumber: 420,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                            lineNumber: 226,
+                                            lineNumber: 418,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1253,7 +1579,7 @@ function LabSchedulingPage() {
                                                     children: "Duration (minutes)"
                                                 }, void 0, false, {
                                                     fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                    lineNumber: 238,
+                                                    lineNumber: 430,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -1266,19 +1592,19 @@ function LabSchedulingPage() {
                                                     required: true
                                                 }, void 0, false, {
                                                     fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                    lineNumber: 239,
+                                                    lineNumber: 431,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                            lineNumber: 237,
+                                            lineNumber: 429,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                    lineNumber: 214,
+                                    lineNumber: 406,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1292,7 +1618,7 @@ function LabSchedulingPage() {
                                                     children: "Location"
                                                 }, void 0, false, {
                                                     fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                    lineNumber: 254,
+                                                    lineNumber: 446,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -1304,13 +1630,13 @@ function LabSchedulingPage() {
                                                     required: true
                                                 }, void 0, false, {
                                                     fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                    lineNumber: 255,
+                                                    lineNumber: 447,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                            lineNumber: 253,
+                                            lineNumber: 445,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1321,7 +1647,7 @@ function LabSchedulingPage() {
                                                     children: "Capacity"
                                                 }, void 0, false, {
                                                     fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                    lineNumber: 265,
+                                                    lineNumber: 457,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -1334,19 +1660,19 @@ function LabSchedulingPage() {
                                                     required: true
                                                 }, void 0, false, {
                                                     fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                    lineNumber: 266,
+                                                    lineNumber: 458,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                            lineNumber: 264,
+                                            lineNumber: 456,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                    lineNumber: 252,
+                                    lineNumber: 444,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1357,7 +1683,7 @@ function LabSchedulingPage() {
                                             children: "Select Branches"
                                         }, void 0, false, {
                                             fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                            lineNumber: 280,
+                                            lineNumber: 472,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1370,18 +1696,18 @@ function LabSchedulingPage() {
                                                     children: branch
                                                 }, branch, false, {
                                                     fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                                    lineNumber: 283,
+                                                    lineNumber: 475,
                                                     columnNumber: 19
                                                 }, this))
                                         }, void 0, false, {
                                             fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                            lineNumber: 281,
+                                            lineNumber: 473,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                    lineNumber: 279,
+                                    lineNumber: 471,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1390,10 +1716,11 @@ function LabSchedulingPage() {
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                                             type: "submit",
                                             className: "flex-1 bg-primary text-primary-foreground hover:bg-primary/90",
+                                            disabled: isLoading,
                                             children: "Create Event"
                                         }, void 0, false, {
                                             fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                            lineNumber: 298,
+                                            lineNumber: 490,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1404,40 +1731,40 @@ function LabSchedulingPage() {
                                             children: "Cancel"
                                         }, void 0, false, {
                                             fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                            lineNumber: 301,
+                                            lineNumber: 497,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                                    lineNumber: 297,
+                                    lineNumber: 489,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                            lineNumber: 167,
+                            lineNumber: 333,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                    lineNumber: 161,
+                    lineNumber: 327,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-                lineNumber: 160,
+                lineNumber: 326,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx",
-        lineNumber: 88,
+        lineNumber: 190,
         columnNumber: 5
     }, this);
 }
-_s(LabSchedulingPage, "kgtdjXrFVEkhtMx63P9Ny7LokGo=");
+_s(LabSchedulingPage, "2UQddMxD0tZYcnPxTz25pf/O5oE=");
 _c = LabSchedulingPage;
 var _c;
 __turbopack_context__.k.register(_c, "LabSchedulingPage");

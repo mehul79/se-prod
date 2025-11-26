@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///Users/mehulgupta/Developer/prods/se-prod/study-lms-frontend-app/app/teacher/lab-scheduling/page.tsx"],"sourcesContent":["\"use client\"\n\n\nexport default function LabSchedulingPage() {\n  return (\n    <div className=\"p-6 space-y-6\">\n      <div className=\"flex items-center justify-between\">\n        <div>\n          <h1 className=\"text-3xl font-bold text-foreground mb-2\">Lab Scheduling</h1>\n          <p className=\"text-muted-foreground\">Create and manage lab events using Mina Scheduler</p>\n        </div>\n      </div>\n\n      <div className=\"border border-border/50 rounded-lg p-2\">\n\n      </div>\n    </div>\n  )\n}\n\n\n\nLabSchedulingPage"],"names":[],"mappings":";;;;;AAAA;;AAGe,SAAS;IACtB,qBACE,gOAAC;QAAI,WAAU;;0BACb,gOAAC;gBAAI,WAAU;0BACb,cAAA,gOAAC;;sCACC,gOAAC;4BAAG,WAAU;sCAA0C;;;;;;sCACxD,gOAAC;4BAAE,WAAU;sCAAwB;;;;;;;;;;;;;;;;;0BAIzC,gOAAC;gBAAI,WAAU;;;;;;;;;;;;AAKrB;KAfwB;AAmBxB"}}]
+}

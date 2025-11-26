@@ -1,0 +1,18 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/login/page": "/login",
+  "/page": "/",
+  "/signup/page": "/signup",
+  "/student/assessment/page": "/student/assessment",
+  "/student/assignments/page": "/student/assignments",
+  "/student/dashboard/page": "/student/dashboard",
+  "/student/lab-calendar/page": "/student/lab-calendar",
+  "/student/results/page": "/student/results",
+  "/student/study-materials/page": "/student/study-materials",
+  "/teacher/create-assessment/page": "/teacher/create-assessment",
+  "/teacher/dashboard/page": "/teacher/dashboard",
+  "/teacher/evaluate-results/page": "/teacher/evaluate-results",
+  "/teacher/lab-scheduling/page": "/teacher/lab-scheduling",
+  "/teacher/study-materials/page": "/teacher/study-materials"
+}

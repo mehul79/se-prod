@@ -46,6 +46,8 @@ export interface LabEvent {
   status: "scheduled" | "ongoing" | "completed"
   capacity?: number
   enrolled?: number
+  // Optional linked assessment id (Prisma Assessment.id)
+  assessmentId?: string
 }
 
 export interface Assessment {

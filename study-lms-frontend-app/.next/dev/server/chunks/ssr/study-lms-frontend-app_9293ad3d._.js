@@ -338,11 +338,11 @@ __turbopack_context__.s([
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/study-lms-frontend-app/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react-jsx-dev-runtime.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/study-lms-frontend-app/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/study-lms-frontend-app/node_modules/next/navigation.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/study-lms-frontend-app/components/ui/card.tsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/study-lms-frontend-app/components/ui/badge.tsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/study-lms-frontend-app/components/ui/button.tsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/study-lms-frontend-app/components/ui/dialog.tsx [app-ssr] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$lib$2f$mock$2d$data$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/study-lms-frontend-app/lib/mock-data.ts [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$calendar$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Calendar$3e$__ = __turbopack_context__.i("[project]/study-lms-frontend-app/node_modules/lucide-react/dist/esm/icons/calendar.js [app-ssr] (ecmascript) <export default as Calendar>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$clock$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Clock$3e$__ = __turbopack_context__.i("[project]/study-lms-frontend-app/node_modules/lucide-react/dist/esm/icons/clock.js [app-ssr] (ecmascript) <export default as Clock>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$map$2d$pin$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__MapPin$3e$__ = __turbopack_context__.i("[project]/study-lms-frontend-app/node_modules/lucide-react/dist/esm/icons/map-pin.js [app-ssr] (ecmascript) <export default as MapPin>");
@@ -368,10 +368,43 @@ const eventTypeColors = {
     viva: "bg-destructive/10 text-destructive",
     demo: "bg-yellow-500/10 text-yellow-700 dark:text-yellow-400"
 };
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 function LabCalendarPage() {
+    const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRouter"])();
     const [selectedEvent, setSelectedEvent] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
     const [viewMode, setViewMode] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("list");
-    const upcomingEvents = __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$lib$2f$mock$2d$data$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["mockLabEvents"].sort((a, b)=>new Date(a.date).getTime() - new Date(b.date).getTime());
+    const [events, setEvents] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
+    const [isLoading, setIsLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        let cancelled = false;
+        async function load() {
+            setIsLoading(true);
+            setError(null);
+            try {
+                const res = await fetch(`${API_URL}/api/lab-events`);
+                if (!res.ok) {
+                    throw new Error("Failed to load lab events");
+                }
+                const data = await res.json();
+                if (!cancelled) {
+                    setEvents(data);
+                }
+            } catch (e) {
+                console.error(e);
+                if (!cancelled) setError("Could not load lab events from server");
+            } finally{
+                if (!cancelled) setIsLoading(false);
+            }
+        }
+        load();
+        return ()=>{
+            cancelled = true;
+        };
+    }, []);
+    const upcomingEvents = [
+        ...events
+    ].sort((a, b)=>new Date(`${a.date}T${a.time || "00:00"}`).getTime() - new Date(`${b.date}T${b.time || "00:00"}`).getTime());
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "p-6 space-y-6",
         children: [
@@ -385,7 +418,7 @@ function LabCalendarPage() {
                                 children: "Lab Events"
                             }, void 0, false, {
                                 fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                lineNumber: 36,
+                                lineNumber: 73,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -393,13 +426,13 @@ function LabCalendarPage() {
                                 children: "Schedule, notifications, and event details"
                             }, void 0, false, {
                                 fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                lineNumber: 37,
+                                lineNumber: 74,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                        lineNumber: 35,
+                        lineNumber: 72,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -412,7 +445,7 @@ function LabCalendarPage() {
                                 children: "List View"
                             }, void 0, false, {
                                 fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                lineNumber: 40,
+                                lineNumber: 77,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -422,19 +455,19 @@ function LabCalendarPage() {
                                 children: "Calendar"
                             }, void 0, false, {
                                 fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                lineNumber: 47,
+                                lineNumber: 84,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                        lineNumber: 39,
+                        lineNumber: 76,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                lineNumber: 34,
+                lineNumber: 71,
                 columnNumber: 7
             }, this),
             viewMode === "list" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -458,7 +491,7 @@ function LabCalendarPage() {
                                                         children: event.eventType.charAt(0).toUpperCase() + event.eventType.slice(1)
                                                     }, void 0, false, {
                                                         fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                        lineNumber: 70,
+                                                        lineNumber: 107,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
@@ -467,13 +500,13 @@ function LabCalendarPage() {
                                                         children: event.status.charAt(0).toUpperCase() + event.status.slice(1)
                                                     }, void 0, false, {
                                                         fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                        lineNumber: 73,
+                                                        lineNumber: 110,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                lineNumber: 69,
+                                                lineNumber: 106,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -481,7 +514,7 @@ function LabCalendarPage() {
                                                 children: event.title
                                             }, void 0, false, {
                                                 fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                lineNumber: 77,
+                                                lineNumber: 114,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -494,20 +527,20 @@ function LabCalendarPage() {
                                                                 className: "w-4 h-4"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                                lineNumber: 82,
+                                                                lineNumber: 119,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                 children: event.date
                                                             }, void 0, false, {
                                                                 fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                                lineNumber: 83,
+                                                                lineNumber: 120,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                        lineNumber: 81,
+                                                        lineNumber: 118,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -517,20 +550,20 @@ function LabCalendarPage() {
                                                                 className: "w-4 h-4"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                                lineNumber: 86,
+                                                                lineNumber: 123,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                 children: event.time
                                                             }, void 0, false, {
                                                                 fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                                lineNumber: 87,
+                                                                lineNumber: 124,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                        lineNumber: 85,
+                                                        lineNumber: 122,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -540,20 +573,20 @@ function LabCalendarPage() {
                                                                 className: "w-4 h-4"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                                lineNumber: 90,
+                                                                lineNumber: 127,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                 children: event.location
                                                             }, void 0, false, {
                                                                 fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                                lineNumber: 91,
+                                                                lineNumber: 128,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                        lineNumber: 89,
+                                                        lineNumber: 126,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -563,7 +596,7 @@ function LabCalendarPage() {
                                                                 className: "w-4 h-4"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                                lineNumber: 94,
+                                                                lineNumber: 131,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -574,53 +607,53 @@ function LabCalendarPage() {
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                                lineNumber: 95,
+                                                                lineNumber: 132,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                        lineNumber: 93,
+                                                        lineNumber: 130,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                lineNumber: 80,
+                                                lineNumber: 117,
                                                 columnNumber: 21
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                        lineNumber: 68,
+                                        lineNumber: 105,
                                         columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$right$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronRight$3e$__["ChevronRight"], {
                                         className: "w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors"
                                     }, void 0, false, {
                                         fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                        lineNumber: 101,
+                                        lineNumber: 138,
                                         columnNumber: 19
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                lineNumber: 67,
+                                lineNumber: 104,
                                 columnNumber: 17
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                            lineNumber: 66,
+                            lineNumber: 103,
                             columnNumber: 15
                         }, this)
                     }, event.id, false, {
                         fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                        lineNumber: 61,
+                        lineNumber: 98,
                         columnNumber: 13
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                lineNumber: 59,
+                lineNumber: 96,
                 columnNumber: 9
             }, this),
             viewMode === "calendar" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
@@ -631,12 +664,12 @@ function LabCalendarPage() {
                             children: "Events Calendar"
                         }, void 0, false, {
                             fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                            lineNumber: 113,
+                            lineNumber: 150,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                        lineNumber: 112,
+                        lineNumber: 149,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -651,7 +684,7 @@ function LabCalendarPage() {
                                             children: event.date
                                         }, void 0, false, {
                                             fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                            lineNumber: 123,
+                                            lineNumber: 160,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -659,7 +692,7 @@ function LabCalendarPage() {
                                             children: event.title
                                         }, void 0, false, {
                                             fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                            lineNumber: 124,
+                                            lineNumber: 161,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -669,36 +702,36 @@ function LabCalendarPage() {
                                                     className: "w-3 h-3"
                                                 }, void 0, false, {
                                                     fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                    lineNumber: 126,
+                                                    lineNumber: 163,
                                                     columnNumber: 21
                                                 }, this),
                                                 event.time
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                            lineNumber: 125,
+                                            lineNumber: 162,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, event.id, true, {
                                     fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                    lineNumber: 118,
+                                    lineNumber: 155,
                                     columnNumber: 17
                                 }, this))
                         }, void 0, false, {
                             fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                            lineNumber: 116,
+                            lineNumber: 153,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                        lineNumber: 115,
+                        lineNumber: 152,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                lineNumber: 111,
+                lineNumber: 148,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Dialog"], {
@@ -720,20 +753,20 @@ function LabCalendarPage() {
                                                     children: selectedEvent.title
                                                 }, void 0, false, {
                                                     fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                    lineNumber: 144,
+                                                    lineNumber: 181,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DialogDescription"], {
                                                     children: selectedEvent.description
                                                 }, void 0, false, {
                                                     fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                    lineNumber: 145,
+                                                    lineNumber: 182,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                            lineNumber: 143,
+                                            lineNumber: 180,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
@@ -741,18 +774,18 @@ function LabCalendarPage() {
                                             children: selectedEvent.eventType.charAt(0).toUpperCase() + selectedEvent.eventType.slice(1)
                                         }, void 0, false, {
                                             fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                            lineNumber: 147,
+                                            lineNumber: 184,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                    lineNumber: 142,
+                                    lineNumber: 179,
                                     columnNumber: 17
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                lineNumber: 141,
+                                lineNumber: 178,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -766,12 +799,12 @@ function LabCalendarPage() {
                                             children: selectedEvent.status.charAt(0).toUpperCase() + selectedEvent.status.slice(1)
                                         }, void 0, false, {
                                             fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                            lineNumber: 156,
+                                            lineNumber: 193,
                                             columnNumber: 19
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                        lineNumber: 155,
+                                        lineNumber: 192,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -785,7 +818,7 @@ function LabCalendarPage() {
                                                         children: "Date"
                                                     }, void 0, false, {
                                                         fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                        lineNumber: 164,
+                                                        lineNumber: 201,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -795,20 +828,20 @@ function LabCalendarPage() {
                                                                 className: "w-4 h-4"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                                lineNumber: 166,
+                                                                lineNumber: 203,
                                                                 columnNumber: 23
                                                             }, this),
                                                             selectedEvent.date
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                        lineNumber: 165,
+                                                        lineNumber: 202,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                lineNumber: 163,
+                                                lineNumber: 200,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -819,7 +852,7 @@ function LabCalendarPage() {
                                                         children: "Time"
                                                     }, void 0, false, {
                                                         fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                        lineNumber: 171,
+                                                        lineNumber: 208,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -829,20 +862,20 @@ function LabCalendarPage() {
                                                                 className: "w-4 h-4"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                                lineNumber: 173,
+                                                                lineNumber: 210,
                                                                 columnNumber: 23
                                                             }, this),
                                                             selectedEvent.time
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                        lineNumber: 172,
+                                                        lineNumber: 209,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                lineNumber: 170,
+                                                lineNumber: 207,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -853,7 +886,7 @@ function LabCalendarPage() {
                                                         children: "Location"
                                                     }, void 0, false, {
                                                         fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                        lineNumber: 178,
+                                                        lineNumber: 215,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -863,20 +896,20 @@ function LabCalendarPage() {
                                                                 className: "w-4 h-4"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                                lineNumber: 180,
+                                                                lineNumber: 217,
                                                                 columnNumber: 23
                                                             }, this),
                                                             selectedEvent.location
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                        lineNumber: 179,
+                                                        lineNumber: 216,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                lineNumber: 177,
+                                                lineNumber: 214,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -887,7 +920,7 @@ function LabCalendarPage() {
                                                         children: "Duration"
                                                     }, void 0, false, {
                                                         fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                        lineNumber: 185,
+                                                        lineNumber: 222,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -898,13 +931,13 @@ function LabCalendarPage() {
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                        lineNumber: 186,
+                                                        lineNumber: 223,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                lineNumber: 184,
+                                                lineNumber: 221,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -915,7 +948,7 @@ function LabCalendarPage() {
                                                         children: "Enrollment"
                                                     }, void 0, false, {
                                                         fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                        lineNumber: 189,
+                                                        lineNumber: 226,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -925,7 +958,7 @@ function LabCalendarPage() {
                                                                 className: "w-4 h-4"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                                lineNumber: 191,
+                                                                lineNumber: 228,
                                                                 columnNumber: 23
                                                             }, this),
                                                             selectedEvent.enrolled,
@@ -934,13 +967,13 @@ function LabCalendarPage() {
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                        lineNumber: 190,
+                                                        lineNumber: 227,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                lineNumber: 188,
+                                                lineNumber: 225,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -951,7 +984,7 @@ function LabCalendarPage() {
                                                         children: "Branches"
                                                     }, void 0, false, {
                                                         fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                        lineNumber: 196,
+                                                        lineNumber: 233,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -959,19 +992,19 @@ function LabCalendarPage() {
                                                         children: selectedEvent.branches.join(", ")
                                                     }, void 0, false, {
                                                         fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                        lineNumber: 197,
+                                                        lineNumber: 234,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                lineNumber: 195,
+                                                lineNumber: 232,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                        lineNumber: 162,
+                                        lineNumber: 199,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -982,7 +1015,7 @@ function LabCalendarPage() {
                                                 children: "About This Event"
                                             }, void 0, false, {
                                                 fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                lineNumber: 203,
+                                                lineNumber: 240,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -990,25 +1023,33 @@ function LabCalendarPage() {
                                                 children: selectedEvent.description
                                             }, void 0, false, {
                                                 fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                lineNumber: 204,
+                                                lineNumber: 241,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                        lineNumber: 202,
+                                        lineNumber: 239,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "flex gap-2 pt-4 border-t border-border/30",
                                         children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
+                                            selectedEvent.assessmentId ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
+                                                className: "flex-1 bg-primary text-primary-foreground hover:bg-primary/90",
+                                                onClick: ()=>router.push(`/student/assessment?assessmentId=${selectedEvent.assessmentId}&labEventId=${selectedEvent.id}`),
+                                                children: "Start Lab Evaluation"
+                                            }, void 0, false, {
+                                                fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
+                                                lineNumber: 247,
+                                                columnNumber: 21
+                                            }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
                                                 className: "flex-1 bg-primary text-primary-foreground hover:bg-primary/90",
                                                 children: "Register"
                                             }, void 0, false, {
                                                 fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                lineNumber: 209,
-                                                columnNumber: 19
+                                                lineNumber: 258,
+                                                columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
                                                 variant: "outline",
@@ -1016,37 +1057,37 @@ function LabCalendarPage() {
                                                 children: "Add to Calendar"
                                             }, void 0, false, {
                                                 fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                                lineNumber: 210,
+                                                lineNumber: 260,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                        lineNumber: 208,
+                                        lineNumber: 245,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                                lineNumber: 153,
+                                lineNumber: 190,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, void 0, true)
                 }, void 0, false, {
                     fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                    lineNumber: 138,
+                    lineNumber: 175,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-                lineNumber: 137,
+                lineNumber: 174,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/study-lms-frontend-app/app/student/lab-calendar/page.tsx",
-        lineNumber: 32,
+        lineNumber: 69,
         columnNumber: 5
     }, this);
 }

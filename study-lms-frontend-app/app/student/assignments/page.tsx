@@ -1,21 +1,125 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { mockAssignments } from "@/lib/mock-data"
 import type { Assignment } from "@/types"
 import { Calendar, CheckCircle, Upload, FileText, Users, Target, User } from "lucide-react"
+import { useAuthStore } from "@/store/auth-store"
+import { useToast } from "@/hooks/use-toast"
 
 const isOverdue = (deadline: string) => new Date(deadline) < new Date()
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000"
+
 export default function AssignmentsPage() {
+  const { toast } = useToast()
+  const currentUser = useAuthStore((s) => s.currentUser)
   const [selectedAssignment, setSelectedAssignment] = useState<Assignment | null>(null)
   const [submissionType, setSubmissionType] = useState<"individual" | "group" | null>(null)
+  const [assignments, setAssignments] = useState<Assignment[]>([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  const assignments = mockAssignments
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [uploadedFiles, setUploadedFiles] = useState<string[]>([])
+  const fileInputRef = useRef<HTMLInputElement | null>(null)
+
+  useEffect(() => {
+    let cancelled = false
+
+    async function load() {
+      setIsLoading(true)
+      setError(null)
+      try {
+        const res = await fetch(`${API_URL}/api/assignments`)
+        if (!res.ok) throw new Error("Failed to load assignments")
+        const data = (await res.json()) as Assignment[]
+        if (!cancelled) setAssignments(data)
+      } catch (e) {
+        console.error(e)
+        if (!cancelled) setError("Could not load assignments from server")
+      } finally {
+        if (!cancelled) setIsLoading(false)
+      }
+    }
+
+    load()
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  const handleOpenAssignment = (assignment: Assignment) => {
+    setSelectedAssignment(assignment)
+    setSubmissionType(null)
+    setUploadedFiles([])
+  }
+
+  const handleUploadClick = () => {
+    fileInputRef.current?.click()
+  }
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (!files || !files.length) return
+
+    if (!selectedAssignment) return
+
+    setIsSubmitting(true)
+    const newUrls: string[] = []
+
+    try {
+      for (const file of Array.from(files)) {
+        const body = new FormData()
+        body.append("file", file)
+
+        const res = await fetch(`${API_URL}/api/upload`, { method: "POST", body })
+        if (!res.ok) throw new Error("Upload failed")
+        const json = (await res.json()) as { url: string }
+        newUrls.push(json.url)
+      }
+
+      setUploadedFiles((prev) => [...prev, ...newUrls])
+      toast({ title: "Files uploaded", description: `${newUrls.length} file(s) ready for submission` })
+    } catch (e) {
+      console.error(e)
+      toast({ title: "Upload failed", description: "Could not upload files", variant: "destructive" })
+    } finally {
+      setIsSubmitting(false)
+      e.target.value = ""
+    }
+  }
+
+  const handleSubmitAssignment = async () => {
+    if (!selectedAssignment) return
+    if (!currentUser) {
+      toast({ title: "Not logged in", description: "Please log in as a student", variant: "destructive" })
+      return
+    }
+
+    setIsSubmitting(true)
+    try {
+      const res = await fetch(`${API_URL}/api/assignments/${selectedAssignment.id}/submissions`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ studentId: currentUser.id || "student1", files: uploadedFiles }),
+      })
+      if (!res.ok) throw new Error("Failed to submit")
+
+      toast({ title: "Assignment submitted", description: selectedAssignment.title })
+      setSelectedAssignment(null)
+      setUploadedFiles([])
+      setSubmissionType(null)
+    } catch (e) {
+      console.error(e)
+      toast({ title: "Submission failed", description: "Could not submit assignment", variant: "destructive" })
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
 
   return (
     <div className="p-6 space-y-6">
@@ -24,6 +128,8 @@ export default function AssignmentsPage() {
         <h1 className="text-3xl font-bold text-foreground mb-2">Assignments</h1>
         <p className="text-muted-foreground">Submit your coursework and track submissions</p>
       </div>
+
+      {error && <p className="text-xs text-destructive mb-1">{error}</p>}
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -75,7 +181,7 @@ export default function AssignmentsPage() {
             <Card
               key={assignment.id}
               className="border-border/50 hover:border-primary/30 transition-all cursor-pointer group"
-              onClick={() => setSelectedAssignment(assignment)}
+              onClick={() => handleOpenAssignment(assignment)}
             >
               <CardContent className="p-4">
                 <div className="flex items-start justify-between gap-4">
@@ -211,23 +317,49 @@ export default function AssignmentsPage() {
                     {/* File Upload */}
                     <div>
                       <p className="text-sm text-muted-foreground mb-2">Upload files</p>
-                      <div className="border-2 border-dashed border-border/30 rounded-lg p-6 text-center hover:border-primary/30 transition-colors cursor-pointer">
+                      <div
+                        className="border-2 border-dashed border-border/30 rounded-lg p-6 text-center hover:border-primary/30 transition-colors cursor-pointer"
+                        onClick={handleUploadClick}
+                      >
                         <Upload className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
-                        <p className="text-sm font-medium text-foreground">Drag and drop or click to upload</p>
+                        <p className="text-sm font-medium text-foreground">Click to choose files</p>
                         <p className="text-xs text-muted-foreground">Max 10MB per file</p>
                       </div>
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        className="hidden"
+                        multiple
+                        onChange={handleFileChange}
+                      />
+                      {uploadedFiles.length > 0 && (
+                        <p className="mt-2 text-xs text-muted-foreground">
+                          {uploadedFiles.length} file(s) selected
+                        </p>
+                      )}
                     </div>
                   </div>
                 )}
 
                 {/* Action Buttons */}
                 <div className="flex gap-2 pt-4 border-t border-border/30">
-                  <Button className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90">
+                  <Button
+                    className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90"
+                    onClick={handleSubmitAssignment}
+                    disabled={isSubmitting || uploadedFiles.length === 0}
+                  >
                     <Upload className="w-4 h-4 mr-2" />
-                    Submit Assignment
+                    {isSubmitting ? "Submitting..." : "Submit Assignment"}
                   </Button>
-                  <Button variant="outline" className="flex-1 bg-transparent">
-                    Save as Draft
+                  <Button
+                    variant="outline"
+                    className="flex-1 bg-transparent"
+                    disabled={isSubmitting}
+                    onClick={() => {
+                      setUploadedFiles([])
+                    }}
+                  >
+                    Clear
                   </Button>
                 </div>
               </div>

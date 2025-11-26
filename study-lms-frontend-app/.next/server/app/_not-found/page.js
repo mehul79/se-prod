@@ -1,0 +1,13 @@
+var R=require("../../chunks/ssr/[turbopack]_runtime.js")("server/app/_not-found/page.js")
+R.c("server/chunks/ssr/study-lms-frontend-app_c2b50a44._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__346e4068._.js")
+R.c("server/chunks/ssr/387af_next_dist_esm_build_templates_app-page_1ebe0a11.js")
+R.c("server/chunks/ssr/[root-of-the-server]__b45827c1._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__1a020335._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__880687e2._.js")
+R.c("server/chunks/ssr/[root-of-the-server]__667cd3df._.js")
+R.c("server/chunks/ssr/387af_next_dist_client_components_37a09222._.js")
+R.c("server/chunks/ssr/387af_next_dist_client_components_builtin_forbidden_0c37c833.js")
+R.c("server/chunks/ssr/a9cb3_tudy-lms-frontend-app__next-internal_server_app__not-found_page_actions_bc9f527b.js")
+R.m(25419)
+module.exports=R.m(25419).exports

@@ -1,0 +1,14 @@
+[
+  {
+    "id": "assign1",
+    "subjectId": "sub1",
+    "title": "Implement Binary Search Tree",
+    "description": "Create a complete BST implementation with insert, delete, and search operations",
+    "deadline": "2024-12-25",
+    "totalMarks": 20,
+    "groupSize": 1,
+    "attachments": [],
+    "createdDate": "2024-11-15",
+    "createdBy": "teacher1"
+  }
+]

@@ -178,6 +178,7 @@ __turbopack_context__.s([
     "default",
     ()=>ManageStudyMaterialsPage
 ]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = /*#__PURE__*/ __turbopack_context__.i("[project]/study-lms-frontend-app/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/study-lms-frontend-app/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/study-lms-frontend-app/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/study-lms-frontend-app/components/ui/card.tsx [app-client] (ecmascript)");
@@ -205,13 +206,63 @@ const typeIcons = {
     document: __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$book$2d$open$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__BookOpen$3e$__["BookOpen"],
     presentation: __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$file$2d$text$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__FileText$3e$__["FileText"]
 };
+const API_URL = __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 function ManageStudyMaterialsPage() {
     _s();
     const [materials, setMaterials] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$lib$2f$mock$2d$data$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["mockStudyMaterials"]);
     const [selectedType, setSelectedType] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
+    const [isUploading, setIsUploading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [uploadError, setUploadError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
+    const fileInputRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
     const filteredMaterials = selectedType ? materials.filter((m)=>m.type === selectedType) : materials;
     const handleDeleteMaterial = (id)=>{
         setMaterials(materials.filter((m)=>m.id !== id));
+    };
+    const triggerFilePicker = ()=>{
+        fileInputRef.current?.click();
+    };
+    const handleFileChange = async (event)=>{
+        const file = event.target.files?.[0];
+        if (!file) return;
+        setIsUploading(true);
+        setUploadError(null);
+        try {
+            const formData = new FormData();
+            formData.append("file", file);
+            const response = await fetch(`${API_URL}/api/upload`, {
+                method: "POST",
+                body: formData
+            });
+            if (!response.ok) {
+                throw new Error("Upload failed");
+            }
+            const data = await response.json();
+            const firstSubject = __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$lib$2f$mock$2d$data$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["mockSubjects"][0];
+            const sizeInMb = `${(data.size / (1024 * 1024)).toFixed(1)} MB`;
+            const newMaterial = {
+                id: `mat_${Date.now()}`,
+                subjectId: firstSubject?.id ?? "sub1",
+                title: data.originalName,
+                description: "Uploaded file",
+                type: "pdf",
+                uploadedBy: firstSubject?.faculty ?? "Uploaded",
+                uploadedDate: new Date().toISOString().slice(0, 10),
+                fileUrl: data.url,
+                fileSize: sizeInMb
+            };
+            setMaterials((prev)=>[
+                    ...prev,
+                    newMaterial
+                ]);
+        } catch (error) {
+            console.error("Upload error", error);
+            setUploadError("Failed to upload file. Please try again.");
+        } finally{
+            setIsUploading(false);
+            if (fileInputRef.current) {
+                fileInputRef.current.value = "";
+            }
+        }
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "p-6 space-y-6",
@@ -226,7 +277,7 @@ function ManageStudyMaterialsPage() {
                                 children: "Study Materials"
                             }, void 0, false, {
                                 fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                                lineNumber: 32,
+                                lineNumber: 95,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -234,48 +285,61 @@ function ManageStudyMaterialsPage() {
                                 children: "Upload and manage course study materials"
                             }, void 0, false, {
                                 fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                                lineNumber: 33,
+                                lineNumber: 96,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                        lineNumber: 31,
+                        lineNumber: 94,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                         className: "bg-primary text-primary-foreground hover:bg-primary/90",
+                        onClick: triggerFilePicker,
+                        disabled: isUploading,
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$upload$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Upload$3e$__["Upload"], {
                                 className: "w-4 h-4 mr-2"
                             }, void 0, false, {
                                 fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                                lineNumber: 36,
+                                lineNumber: 103,
                                 columnNumber: 11
                             }, this),
-                            "Upload Material"
+                            isUploading ? "Uploading..." : "Upload Material"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                        lineNumber: 35,
+                        lineNumber: 98,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                lineNumber: 30,
+                lineNumber: 93,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                ref: fileInputRef,
+                type: "file",
+                className: "hidden",
+                onChange: handleFileChange
+            }, void 0, false, {
+                fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
+                lineNumber: 109,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
                 className: "border-border/50 border-2 border-dashed",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
-                    className: "p-8 text-center",
+                    className: "p-8 text-center cursor-pointer",
+                    onClick: triggerFilePicker,
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$upload$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Upload$3e$__["Upload"], {
                             className: "w-12 h-12 text-muted-foreground mx-auto mb-3"
                         }, void 0, false, {
                             fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                            lineNumber: 44,
+                            lineNumber: 122,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -283,7 +347,7 @@ function ManageStudyMaterialsPage() {
                             children: "Upload New Material"
                         }, void 0, false, {
                             fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                            lineNumber: 45,
+                            lineNumber: 123,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -291,26 +355,35 @@ function ManageStudyMaterialsPage() {
                             children: "Drag and drop files or click to browse"
                         }, void 0, false, {
                             fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                            lineNumber: 46,
+                            lineNumber: 124,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                             variant: "outline",
-                            children: "Select Files"
+                            disabled: isUploading,
+                            children: isUploading ? "Uploading..." : "Select Files"
                         }, void 0, false, {
                             fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                            lineNumber: 47,
+                            lineNumber: 125,
                             columnNumber: 11
+                        }, this),
+                        uploadError && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                            className: "mt-3 text-xs text-destructive",
+                            children: uploadError
+                        }, void 0, false, {
+                            fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
+                            lineNumber: 128,
+                            columnNumber: 27
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                    lineNumber: 43,
+                    lineNumber: 118,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                lineNumber: 42,
+                lineNumber: 117,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -321,7 +394,7 @@ function ManageStudyMaterialsPage() {
                         children: "Filter by Type"
                     }, void 0, false, {
                         fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                        lineNumber: 53,
+                        lineNumber: 134,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -334,7 +407,7 @@ function ManageStudyMaterialsPage() {
                                 children: "All Types"
                             }, void 0, false, {
                                 fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                                lineNumber: 55,
+                                lineNumber: 136,
                                 columnNumber: 11
                             }, this),
                             [
@@ -349,19 +422,19 @@ function ManageStudyMaterialsPage() {
                                     children: type.toUpperCase()
                                 }, type, false, {
                                     fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                                    lineNumber: 63,
+                                    lineNumber: 144,
                                     columnNumber: 13
                                 }, this))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                        lineNumber: 54,
+                        lineNumber: 135,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                lineNumber: 52,
+                lineNumber: 133,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -373,7 +446,7 @@ function ManageStudyMaterialsPage() {
                                 children: "Uploaded Materials"
                             }, void 0, false, {
                                 fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                                lineNumber: 78,
+                                lineNumber: 159,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardDescription"], {
@@ -383,13 +456,13 @@ function ManageStudyMaterialsPage() {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                                lineNumber: 79,
+                                lineNumber: 160,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                        lineNumber: 77,
+                        lineNumber: 158,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -407,7 +480,7 @@ function ManageStudyMaterialsPage() {
                                                     children: "Material"
                                                 }, void 0, false, {
                                                     fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                                                    lineNumber: 86,
+                                                    lineNumber: 167,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -415,7 +488,7 @@ function ManageStudyMaterialsPage() {
                                                     children: "Subject"
                                                 }, void 0, false, {
                                                     fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                                                    lineNumber: 87,
+                                                    lineNumber: 168,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -423,7 +496,7 @@ function ManageStudyMaterialsPage() {
                                                     children: "Type"
                                                 }, void 0, false, {
                                                     fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                                                    lineNumber: 88,
+                                                    lineNumber: 169,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -431,7 +504,7 @@ function ManageStudyMaterialsPage() {
                                                     children: "Size"
                                                 }, void 0, false, {
                                                     fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                                                    lineNumber: 89,
+                                                    lineNumber: 170,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -439,7 +512,7 @@ function ManageStudyMaterialsPage() {
                                                     children: "Date"
                                                 }, void 0, false, {
                                                     fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                                                    lineNumber: 90,
+                                                    lineNumber: 171,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -447,18 +520,18 @@ function ManageStudyMaterialsPage() {
                                                     children: "Actions"
                                                 }, void 0, false, {
                                                     fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                                                    lineNumber: 91,
+                                                    lineNumber: 172,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                                            lineNumber: 85,
+                                            lineNumber: 166,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                                        lineNumber: 84,
+                                        lineNumber: 165,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
@@ -477,7 +550,7 @@ function ManageStudyMaterialsPage() {
                                                                     className: "w-4 h-4 text-primary"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                                                                    lineNumber: 103,
+                                                                    lineNumber: 184,
                                                                     columnNumber: 27
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -487,7 +560,7 @@ function ManageStudyMaterialsPage() {
                                                                             children: material.title
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                                                                            lineNumber: 105,
+                                                                            lineNumber: 186,
                                                                             columnNumber: 29
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -495,24 +568,24 @@ function ManageStudyMaterialsPage() {
                                                                             children: material.description
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                                                                            lineNumber: 106,
+                                                                            lineNumber: 187,
                                                                             columnNumber: 29
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                                                                    lineNumber: 104,
+                                                                    lineNumber: 185,
                                                                     columnNumber: 27
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                                                            lineNumber: 102,
+                                                            lineNumber: 183,
                                                             columnNumber: 25
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                                                        lineNumber: 101,
+                                                        lineNumber: 182,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -522,12 +595,12 @@ function ManageStudyMaterialsPage() {
                                                             children: subject?.code
                                                         }, void 0, false, {
                                                             fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                                                            lineNumber: 111,
+                                                            lineNumber: 192,
                                                             columnNumber: 25
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                                                        lineNumber: 110,
+                                                        lineNumber: 191,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -538,12 +611,12 @@ function ManageStudyMaterialsPage() {
                                                             children: material.type.toUpperCase()
                                                         }, void 0, false, {
                                                             fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                                                            lineNumber: 114,
+                                                            lineNumber: 195,
                                                             columnNumber: 25
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                                                        lineNumber: 113,
+                                                        lineNumber: 194,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -551,7 +624,7 @@ function ManageStudyMaterialsPage() {
                                                         children: material.fileSize
                                                     }, void 0, false, {
                                                         fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                                                        lineNumber: 118,
+                                                        lineNumber: 199,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -559,7 +632,7 @@ function ManageStudyMaterialsPage() {
                                                         children: material.uploadedDate
                                                     }, void 0, false, {
                                                         fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                                                        lineNumber: 119,
+                                                        lineNumber: 200,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -574,12 +647,12 @@ function ManageStudyMaterialsPage() {
                                                                         className: "w-4 h-4"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                                                                        lineNumber: 123,
+                                                                        lineNumber: 204,
                                                                         columnNumber: 29
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                                                                    lineNumber: 122,
+                                                                    lineNumber: 203,
                                                                     columnNumber: 27
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -591,67 +664,67 @@ function ManageStudyMaterialsPage() {
                                                                         className: "w-4 h-4"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                                                                        lineNumber: 131,
+                                                                        lineNumber: 212,
                                                                         columnNumber: 29
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                                                                    lineNumber: 125,
+                                                                    lineNumber: 206,
                                                                     columnNumber: 27
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                                                            lineNumber: 121,
+                                                            lineNumber: 202,
                                                             columnNumber: 25
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                                                        lineNumber: 120,
+                                                        lineNumber: 201,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, material.id, true, {
                                                 fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                                                lineNumber: 100,
+                                                lineNumber: 181,
                                                 columnNumber: 21
                                             }, this);
                                         })
                                     }, void 0, false, {
                                         fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                                        lineNumber: 94,
+                                        lineNumber: 175,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                                lineNumber: 83,
+                                lineNumber: 164,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                            lineNumber: 82,
+                            lineNumber: 163,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                        lineNumber: 81,
+                        lineNumber: 162,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-                lineNumber: 76,
+                lineNumber: 157,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/study-lms-frontend-app/app/teacher/study-materials/page.tsx",
-        lineNumber: 28,
+        lineNumber: 91,
         columnNumber: 5
     }, this);
 }
-_s(ManageStudyMaterialsPage, "fBVkYLW/zoIv92mR4aisZJRuJaE=");
+_s(ManageStudyMaterialsPage, "8BmBKUnPLi6pkGKG41lEg75WWdE=");
 _c = ManageStudyMaterialsPage;
 var _c;
 __turbopack_context__.k.register(_c, "ManageStudyMaterialsPage");

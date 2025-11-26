@@ -54,6 +54,7 @@ model User {
   createdAssessments   Assessment[] @relation("assessment_creator")
   assessmentAttempts   AssessmentAttempt[]
   createdAssignments   Assignment[]  @relation("assignment_creator")
+  createdGroups Group[]   @relation("group_creator")
   submissions          AssignmentSubmission[]
   groups               GroupMember[]
   createdEvents        CalendarEvent[] @relation("event_creator")
@@ -85,6 +86,7 @@ model Subject {
   files     File[]
   assessments Assessment[]
   assignments Assignment[]
+  events CalendarEvent[]
 }
 
 /// Folder within a subject for study materials
@@ -146,7 +148,7 @@ model Assessment {
   questionsJson  Json?
 
   attempts       AssessmentAttempt[]
-  calendarEvent  CalendarEvent? @relation(fields: [calendarEventId], references: [id])
+  calendarEvent  CalendarEvent?   @relation("assessment_to_event")
   calendarEventId String?
 
   createdAt      DateTime       @default(now())
@@ -199,7 +201,7 @@ model Group {
   id         String         @id @default(uuid())
   name       String?
   createdById String?
-  createdBy  User?          @relation(fields: [createdById], references: [id])
+  createdBy   User? @relation("group_creator", fields: [createdById], references: [id])
   createdAt  DateTime       @default(now())
 
   members    GroupMember[]
@@ -272,8 +274,8 @@ model CalendarEvent {
   subjectId    String?
   subject      Subject? @relation(fields: [subjectId], references: [id])
 
-  assessmentId String?
-  assessment   Assessment? @relation(fields: [assessmentId], references: [id])
+  assessmentId   String?
+  assessment     Assessment? @relation("assessment_to_event", fields: [assessmentId], references: [id])
 
   startAt      DateTime
   endAt        DateTime

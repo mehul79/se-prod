@@ -10,6 +10,8 @@ import { Badge } from "@/components/ui/badge"
 import { mockSubjects } from "@/lib/mock-data"
 import { Plus, Trash2, Eye } from "lucide-react"
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000"
+
 export default function CreateAssessmentPage() {
   const [assessmentType, setAssessmentType] = useState<"mcq" | "coding" | "mixed" | null>(null)
   const [formData, setFormData] = useState({
@@ -21,10 +23,70 @@ export default function CreateAssessmentPage() {
     passcode: "",
   })
   const [questions, setQuestions] = useState<any[]>([])
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [success, setSuccess] = useState<string | null>(null)
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+  ) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
+  }
+
+  const handlePublish = async () => {
+    if (!assessmentType) {
+      setError("Select an assessment type first")
+      return
+    }
+
+    if (!formData.title || !formData.subject || !formData.duration || !formData.totalMarks || !formData.passcode) {
+      setError("Please fill in title, subject, duration, total marks and passcode")
+      return
+    }
+
+    setIsSubmitting(true)
+    setError(null)
+    setSuccess(null)
+
+    try {
+      const response = await fetch(`${API_URL}/api/assessments`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title: formData.title,
+          subjectId: formData.subject,
+          description: formData.description,
+          type: assessmentType,
+          duration: Number(formData.duration),
+          totalMarks: Number(formData.totalMarks),
+          passcode: formData.passcode,
+        }),
+      })
+
+      if (!response.ok) {
+        const body = await response.json().catch(() => null)
+        throw new Error(body?.error || "Failed to create assessment")
+      }
+
+      setSuccess("Assessment created successfully")
+      // Reset form but keep selected assessment type so teacher can create another quickly
+      setFormData({
+        title: "",
+        subject: "",
+        description: "",
+        duration: "",
+        totalMarks: "",
+        passcode: "",
+      })
+      setQuestions([])
+    } catch (err: any) {
+      setError(err.message || "Something went wrong")
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleAddQuestion = () => {
@@ -90,8 +152,13 @@ export default function CreateAssessmentPage() {
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-foreground">Subject</label>
-                  <select className="w-full px-3 py-2 border border-border/30 rounded-lg bg-input text-foreground text-sm">
-                    <option>Select subject</option>
+                  <select
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border border-border/30 rounded-lg bg-input text-foreground text-sm"
+                  >
+                    <option value="">Select subject</option>
                     {mockSubjects.map((subject) => (
                       <option key={subject.id} value={subject.id}>
                         {subject.name}
@@ -157,7 +224,11 @@ export default function CreateAssessmentPage() {
                 <CardTitle>Questions</CardTitle>
                 <CardDescription>{questions.length} questions added</CardDescription>
               </div>
-              <Button onClick={handleAddQuestion} className="bg-primary text-primary-foreground hover:bg-primary/90">
+              <Button
+                type="button"
+                onClick={handleAddQuestion}
+                className="bg-primary text-primary-foreground hover:bg-primary/90"
+              >
                 <Plus className="w-4 h-4 mr-2" />
                 Add Question
               </Button>
@@ -204,13 +275,22 @@ export default function CreateAssessmentPage() {
           </Card>
 
           {/* Actions */}
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-center">
             <Button onClick={() => setAssessmentType(null)} variant="outline" className="flex-1">
               Back
             </Button>
-            <Button className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90">
-              Publish Assessment
-            </Button>
+            <div className="flex-1 flex flex-col gap-1 items-stretch">
+              <Button
+                type="button"
+                onClick={handlePublish}
+                disabled={isSubmitting}
+                className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
+              >
+                {isSubmitting ? "Publishing..." : "Publish Assessment"}
+              </Button>
+              {error && <p className="text-xs text-destructive text-right">{error}</p>}
+              {success && !error && <p className="text-xs text-emerald-600 text-right">{success}</p>}
+            </div>
           </div>
         </>
       )}

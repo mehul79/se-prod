@@ -173,6 +173,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$
 ;
 ;
 ;
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 function CreateAssessmentPage() {
     const [assessmentType, setAssessmentType] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
     const [formData, setFormData] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])({
@@ -184,12 +185,64 @@ function CreateAssessmentPage() {
         passcode: ""
     });
     const [questions, setQuestions] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
+    const [isSubmitting, setIsSubmitting] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [error, setError] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
+    const [success, setSuccess] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
     const handleInputChange = (e)=>{
         const { name, value } = e.target;
         setFormData((prev)=>({
                 ...prev,
                 [name]: value
             }));
+    };
+    const handlePublish = async ()=>{
+        if (!assessmentType) {
+            setError("Select an assessment type first");
+            return;
+        }
+        if (!formData.title || !formData.subject || !formData.duration || !formData.totalMarks || !formData.passcode) {
+            setError("Please fill in title, subject, duration, total marks and passcode");
+            return;
+        }
+        setIsSubmitting(true);
+        setError(null);
+        setSuccess(null);
+        try {
+            const response = await fetch(`${API_URL}/api/assessments`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    title: formData.title,
+                    subjectId: formData.subject,
+                    description: formData.description,
+                    type: assessmentType,
+                    duration: Number(formData.duration),
+                    totalMarks: Number(formData.totalMarks),
+                    passcode: formData.passcode
+                })
+            });
+            if (!response.ok) {
+                const body = await response.json().catch(()=>null);
+                throw new Error(body?.error || "Failed to create assessment");
+            }
+            setSuccess("Assessment created successfully");
+            // Reset form but keep selected assessment type so teacher can create another quickly
+            setFormData({
+                title: "",
+                subject: "",
+                description: "",
+                duration: "",
+                totalMarks: "",
+                passcode: ""
+            });
+            setQuestions([]);
+        } catch (err) {
+            setError(err.message || "Something went wrong");
+        } finally{
+            setIsSubmitting(false);
+        }
     };
     const handleAddQuestion = ()=>{
         const newQuestion = {
@@ -215,7 +268,7 @@ function CreateAssessmentPage() {
                         children: "Create Assessment"
                     }, void 0, false, {
                         fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                        lineNumber: 47,
+                        lineNumber: 109,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -223,13 +276,13 @@ function CreateAssessmentPage() {
                         children: "Create MCQ, coding, or mixed assessments for your students"
                     }, void 0, false, {
                         fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                        lineNumber: 48,
+                        lineNumber: 110,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                lineNumber: 46,
+                lineNumber: 108,
                 columnNumber: 7
             }, this),
             !assessmentType ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -261,7 +314,7 @@ function CreateAssessmentPage() {
                                     children: title
                                 }, void 0, false, {
                                     fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                    lineNumber: 65,
+                                    lineNumber: 127,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -269,23 +322,23 @@ function CreateAssessmentPage() {
                                     children: desc
                                 }, void 0, false, {
                                     fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                    lineNumber: 66,
+                                    lineNumber: 128,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                            lineNumber: 64,
+                            lineNumber: 126,
                             columnNumber: 15
                         }, this)
                     }, type, false, {
                         fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                        lineNumber: 59,
+                        lineNumber: 121,
                         columnNumber: 13
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                lineNumber: 53,
+                lineNumber: 115,
                 columnNumber: 9
             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
                 children: [
@@ -298,20 +351,20 @@ function CreateAssessmentPage() {
                                         children: "Assessment Details"
                                     }, void 0, false, {
                                         fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                        lineNumber: 76,
+                                        lineNumber: 138,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardDescription"], {
                                         children: "Configure your assessment settings"
                                     }, void 0, false, {
                                         fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                        lineNumber: 77,
+                                        lineNumber: 139,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                lineNumber: 75,
+                                lineNumber: 137,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -328,7 +381,7 @@ function CreateAssessmentPage() {
                                                         children: "Title"
                                                     }, void 0, false, {
                                                         fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                                        lineNumber: 82,
+                                                        lineNumber: 144,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -339,13 +392,13 @@ function CreateAssessmentPage() {
                                                         className: "bg-input border-border/30"
                                                     }, void 0, false, {
                                                         fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                                        lineNumber: 83,
+                                                        lineNumber: 145,
                                                         columnNumber: 19
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                                lineNumber: 81,
+                                                lineNumber: 143,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -356,17 +409,21 @@ function CreateAssessmentPage() {
                                                         children: "Subject"
                                                     }, void 0, false, {
                                                         fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                                        lineNumber: 92,
+                                                        lineNumber: 154,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
+                                                        name: "subject",
+                                                        value: formData.subject,
+                                                        onChange: handleInputChange,
                                                         className: "w-full px-3 py-2 border border-border/30 rounded-lg bg-input text-foreground text-sm",
                                                         children: [
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                                                value: "",
                                                                 children: "Select subject"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                                                lineNumber: 94,
+                                                                lineNumber: 161,
                                                                 columnNumber: 21
                                                             }, this),
                                                             __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$lib$2f$mock$2d$data$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["mockSubjects"].map((subject)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -374,25 +431,25 @@ function CreateAssessmentPage() {
                                                                     children: subject.name
                                                                 }, subject.id, false, {
                                                                     fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                                                    lineNumber: 96,
+                                                                    lineNumber: 163,
                                                                     columnNumber: 23
                                                                 }, this))
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                                        lineNumber: 93,
+                                                        lineNumber: 155,
                                                         columnNumber: 19
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                                lineNumber: 91,
+                                                lineNumber: 153,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                        lineNumber: 80,
+                                        lineNumber: 142,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -403,7 +460,7 @@ function CreateAssessmentPage() {
                                                 children: "Description"
                                             }, void 0, false, {
                                                 fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                                lineNumber: 105,
+                                                lineNumber: 172,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
@@ -415,13 +472,13 @@ function CreateAssessmentPage() {
                                                 rows: 3
                                             }, void 0, false, {
                                                 fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                                lineNumber: 106,
+                                                lineNumber: 173,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                        lineNumber: 104,
+                                        lineNumber: 171,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -435,7 +492,7 @@ function CreateAssessmentPage() {
                                                         children: "Duration (min)"
                                                     }, void 0, false, {
                                                         fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                                        lineNumber: 118,
+                                                        lineNumber: 185,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -447,13 +504,13 @@ function CreateAssessmentPage() {
                                                         className: "bg-input border-border/30"
                                                     }, void 0, false, {
                                                         fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                                        lineNumber: 119,
+                                                        lineNumber: 186,
                                                         columnNumber: 19
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                                lineNumber: 117,
+                                                lineNumber: 184,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -464,7 +521,7 @@ function CreateAssessmentPage() {
                                                         children: "Total Marks"
                                                     }, void 0, false, {
                                                         fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                                        lineNumber: 129,
+                                                        lineNumber: 196,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -476,13 +533,13 @@ function CreateAssessmentPage() {
                                                         className: "bg-input border-border/30"
                                                     }, void 0, false, {
                                                         fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                                        lineNumber: 130,
+                                                        lineNumber: 197,
                                                         columnNumber: 19
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                                lineNumber: 128,
+                                                lineNumber: 195,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -493,7 +550,7 @@ function CreateAssessmentPage() {
                                                         children: "Passcode"
                                                     }, void 0, false, {
                                                         fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                                        lineNumber: 140,
+                                                        lineNumber: 207,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -504,31 +561,31 @@ function CreateAssessmentPage() {
                                                         className: "bg-input border-border/30"
                                                     }, void 0, false, {
                                                         fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                                        lineNumber: 141,
+                                                        lineNumber: 208,
                                                         columnNumber: 19
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                                lineNumber: 139,
+                                                lineNumber: 206,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                        lineNumber: 116,
+                                        lineNumber: 183,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                lineNumber: 79,
+                                lineNumber: 141,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                        lineNumber: 74,
+                        lineNumber: 136,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
@@ -543,7 +600,7 @@ function CreateAssessmentPage() {
                                                 children: "Questions"
                                             }, void 0, false, {
                                                 fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                                lineNumber: 157,
+                                                lineNumber: 224,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardDescription"], {
@@ -553,16 +610,17 @@ function CreateAssessmentPage() {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                                lineNumber: 158,
+                                                lineNumber: 225,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                        lineNumber: 156,
+                                        lineNumber: 223,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
+                                        type: "button",
                                         onClick: handleAddQuestion,
                                         className: "bg-primary text-primary-foreground hover:bg-primary/90",
                                         children: [
@@ -570,20 +628,20 @@ function CreateAssessmentPage() {
                                                 className: "w-4 h-4 mr-2"
                                             }, void 0, false, {
                                                 fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                                lineNumber: 161,
+                                                lineNumber: 232,
                                                 columnNumber: 17
                                             }, this),
                                             "Add Question"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                        lineNumber: 160,
+                                        lineNumber: 227,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                lineNumber: 155,
+                                lineNumber: 222,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -593,12 +651,12 @@ function CreateAssessmentPage() {
                                         children: 'No questions added yet. Click "Add Question" to begin.'
                                     }, void 0, false, {
                                         fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                        lineNumber: 168,
+                                        lineNumber: 239,
                                         columnNumber: 19
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                    lineNumber: 167,
+                                    lineNumber: 238,
                                     columnNumber: 17
                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "space-y-3",
@@ -616,7 +674,7 @@ function CreateAssessmentPage() {
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                                            lineNumber: 178,
+                                                            lineNumber: 249,
                                                             columnNumber: 25
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -628,7 +686,7 @@ function CreateAssessmentPage() {
                                                                     children: question.type.toUpperCase()
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                                                    lineNumber: 180,
+                                                                    lineNumber: 251,
                                                                     columnNumber: 27
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -639,19 +697,19 @@ function CreateAssessmentPage() {
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                                                    lineNumber: 183,
+                                                                    lineNumber: 254,
                                                                     columnNumber: 27
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                                            lineNumber: 179,
+                                                            lineNumber: 250,
                                                             columnNumber: 25
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                                    lineNumber: 177,
+                                                    lineNumber: 248,
                                                     columnNumber: 23
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -664,12 +722,12 @@ function CreateAssessmentPage() {
                                                                 className: "w-4 h-4"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                                                lineNumber: 188,
+                                                                lineNumber: 259,
                                                                 columnNumber: 27
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                                            lineNumber: 187,
+                                                            lineNumber: 258,
                                                             columnNumber: 25
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -681,44 +739,44 @@ function CreateAssessmentPage() {
                                                                 className: "w-4 h-4"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                                                lineNumber: 196,
+                                                                lineNumber: 267,
                                                                 columnNumber: 27
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                                            lineNumber: 190,
+                                                            lineNumber: 261,
                                                             columnNumber: 25
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                                    lineNumber: 186,
+                                                    lineNumber: 257,
                                                     columnNumber: 23
                                                 }, this)
                                             ]
                                         }, question.id, true, {
                                             fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                            lineNumber: 173,
+                                            lineNumber: 244,
                                             columnNumber: 21
                                         }, this))
                                 }, void 0, false, {
                                     fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                    lineNumber: 171,
+                                    lineNumber: 242,
                                     columnNumber: 17
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                lineNumber: 165,
+                                lineNumber: 236,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                        lineNumber: 154,
+                        lineNumber: 221,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "flex gap-2",
+                        className: "flex gap-2 items-center",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
                                 onClick: ()=>setAssessmentType(null),
@@ -727,21 +785,49 @@ function CreateAssessmentPage() {
                                 children: "Back"
                             }, void 0, false, {
                                 fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                lineNumber: 208,
+                                lineNumber: 279,
                                 columnNumber: 13
                             }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
-                                className: "flex-1 bg-primary text-primary-foreground hover:bg-primary/90",
-                                children: "Publish Assessment"
-                            }, void 0, false, {
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "flex-1 flex flex-col gap-1 items-stretch",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
+                                        type: "button",
+                                        onClick: handlePublish,
+                                        disabled: isSubmitting,
+                                        className: "w-full bg-primary text-primary-foreground hover:bg-primary/90",
+                                        children: isSubmitting ? "Publishing..." : "Publish Assessment"
+                                    }, void 0, false, {
+                                        fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
+                                        lineNumber: 283,
+                                        columnNumber: 15
+                                    }, this),
+                                    error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                        className: "text-xs text-destructive text-right",
+                                        children: error
+                                    }, void 0, false, {
+                                        fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
+                                        lineNumber: 291,
+                                        columnNumber: 25
+                                    }, this),
+                                    success && !error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$study$2d$lms$2d$frontend$2d$app$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                        className: "text-xs text-emerald-600 text-right",
+                                        children: success
+                                    }, void 0, false, {
+                                        fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
+                                        lineNumber: 292,
+                                        columnNumber: 37
+                                    }, this)
+                                ]
+                            }, void 0, true, {
                                 fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                                lineNumber: 211,
+                                lineNumber: 282,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-                        lineNumber: 207,
+                        lineNumber: 278,
                         columnNumber: 11
                     }, this)
                 ]
@@ -749,7 +835,7 @@ function CreateAssessmentPage() {
         ]
     }, void 0, true, {
         fileName: "[project]/study-lms-frontend-app/app/teacher/create-assessment/page.tsx",
-        lineNumber: 44,
+        lineNumber: 106,
         columnNumber: 5
     }, this);
 }

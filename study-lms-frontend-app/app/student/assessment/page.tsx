@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useSearchParams, useRouter } from "next/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -16,6 +16,8 @@ import { useAssessmentStore } from "@/store/assessment-store"
 import { useAuthStore } from "@/store/auth-store"
 import { mockAssessments } from "@/lib/mock-data"
 import { AlertCircle, Send } from "lucide-react"
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000"
 
 type PageState = "passcode" | "permissions" | "assessment" | "submitted"
 
@@ -31,6 +33,9 @@ export default function AssessmentPage() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [answeredQuestions, setAnsweredQuestions] = useState<Set<string>>(new Set())
   const [timeWarning, setTimeWarning] = useState<Set<string>>(new Set())
+  const [remoteAssessment, setRemoteAssessment] = useState<any | null>(null)
+  const [isLoadingAssessment, setIsLoadingAssessment] = useState<boolean>(false)
+  const [loadError, setLoadError] = useState<string | null>(null)
 
   const startAssessment = useAssessmentStore((state) => state.startAssessment)
   const updateAnswer = useAssessmentStore((state) => state.updateAnswer)
@@ -38,16 +43,84 @@ export default function AssessmentPage() {
   const submitAssessment = useAssessmentStore((state) => state.submitAssessment)
   const currentResponse = useAssessmentStore((state) => state.currentResponse)
 
-  const assessment = mockAssessments.find((a) => a.id === assessmentId)
+  // Load assessment metadata from backend with fallback to mock data
+  useEffect(() => {
+    if (!assessmentId) return
+
+    let cancelled = false
+    setIsLoadingAssessment(true)
+    setLoadError(null)
+
+    async function load() {
+      try {
+        const res = await fetch(`${API_URL}/api/assessments/${assessmentId}`)
+        if (!res.ok) {
+          setIsLoadingAssessment(false)
+          return
+        }
+        const data = await res.json()
+        if (!cancelled) {
+          setRemoteAssessment(data)
+        }
+      } catch (e) {
+        console.error("Failed to load assessment", e)
+        if (!cancelled) setLoadError("Could not load assessment from server")
+      } finally {
+        if (!cancelled) setIsLoadingAssessment(false)
+      }
+    }
+
+    void load()
+
+    return () => {
+      cancelled = true
+    }
+  }, [assessmentId])
+
+  const mockAssessment = useMemo(
+    () => mockAssessments.find((a) => a.id === assessmentId),
+    [assessmentId],
+  )
+
+  const assessment = useMemo(() => {
+    if (remoteAssessment) {
+      // Prefer backend metadata but fall back to mock questions for now
+      const base = mockAssessment || remoteAssessment
+      return {
+        ...base,
+        ...remoteAssessment,
+        questions: mockAssessment?.questions || [],
+      }
+    }
+    return mockAssessment
+  }, [mockAssessment, remoteAssessment])
+
   const questions = assessment?.questions || []
   const currentQuestion = questions[currentQuestionIndex]
+
+  if (isLoadingAssessment && !assessment) {
+    return (
+      <div className="p-6">
+        <Card>
+          <CardHeader>
+            <CardTitle>Loading assessment...</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground">Please wait while we load your assessment.</p>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
 
   if (!assessment || !currentUser) {
     return (
       <div className="p-6">
         <Alert variant="destructive">
           <AlertCircle className="h-4 w-4" />
-          <AlertDescription>Assessment not found or not authenticated</AlertDescription>
+          <AlertDescription>
+            {loadError || "Assessment not found or not authenticated"}
+          </AlertDescription>
         </Alert>
       </div>
     )
@@ -66,11 +139,30 @@ export default function AssessmentPage() {
   const handleStartAssessment = () => {
     startAssessment(currentUser.id, assessmentId!)
     setPageState("assessment")
+
+    // Fire-and-forget backend attempt creation
+    if (!assessmentId) return
+    ;(async () => {
+      try {
+        await fetch(`${API_URL}/api/assessments/${assessmentId}/attempts`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            studentId: currentUser.id,
+          }),
+        })
+      } catch (e) {
+        console.error("Failed to start assessment attempt", e)
+      }
+    })()
   }
 
   const handleTimeUp = () => {
     if (currentResponse?.status === "in_progress") {
       submitAssessment()
+      void submitToBackend()
       setPageState("submitted")
     }
   }
@@ -104,7 +196,27 @@ export default function AssessmentPage() {
   const handleSubmit = () => {
     if (confirm("Are you sure you want to submit? You cannot change answers after submission.")) {
       submitAssessment()
+      void submitToBackend()
       setPageState("submitted")
+    }
+  }
+
+  const submitToBackend = async () => {
+    if (!assessmentId || !currentUser || !currentResponse) return
+
+    try {
+      await fetch(`${API_URL}/api/assessments/${assessmentId}/submit`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          studentId: currentUser.id,
+          answers: currentResponse.answers,
+        }),
+      })
+    } catch (e) {
+      console.error("Failed to submit assessment attempt", e)
     }
   }
 

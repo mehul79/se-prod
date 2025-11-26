@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -8,10 +8,62 @@ import { Input } from "@/components/ui/input"
 import { mockStudentResults, mockAssessments } from "@/lib/mock-data"
 import { CheckCircle, AlertCircle, Filter, Download } from "lucide-react"
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000"
+
 export default function EvaluateResultsPage() {
   const [selectedAssessment, setSelectedAssessment] = useState<string | null>(null)
   const [filterType, setFilterType] = useState<"all" | "pending" | "graded">("all")
   const [results, setResults] = useState(mockStudentResults)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  // When an assessment is selected, try to load attempts from backend to overlay real data.
+  useEffect(() => {
+    if (!selectedAssessment) return
+
+    let cancelled = false
+    setIsLoading(true)
+    setError(null)
+
+    async function loadAttempts() {
+      try {
+        const res = await fetch(`${API_URL}/api/assessments/${selectedAssessment}/attempts`)
+        if (!res.ok) {
+          setIsLoading(false)
+          return
+        }
+        const attempts = await res.json()
+
+        if (cancelled) return
+
+        // Map Prisma AssessmentAttempt records into the StudentResult shape used by this page.
+        const mapped = attempts.map((attempt: any, index: number) => ({
+          id: attempt.id || `attempt_${index}`,
+          studentId: attempt.studentId,
+          assessmentId: attempt.assessmentId,
+          marksObtained: attempt.score ?? 0,
+          totalMarks: 100,
+          percentage: attempt.score != null ? (attempt.score / 100) * 100 : 0,
+          status: attempt.status === "EVALUATED" ? ("completed" as const) : ("pending" as const),
+          submittedAt: attempt.submittedAt || attempt.startedAt || "",
+          feedback: undefined,
+        }))
+
+        setResults(mapped)
+      } catch (e) {
+        console.error("Failed to load assessment attempts", e)
+        if (!cancelled) setError("Could not load attempts from server; showing mock data.")
+      } finally {
+        if (!cancelled) setIsLoading(false)
+      }
+    }
+
+    void loadAttempts()
+
+    return () => {
+      cancelled = true
+    }
+  }, [selectedAssessment])
 
   const filteredResults =
     filterType === "all"
@@ -28,6 +80,24 @@ export default function EvaluateResultsPage() {
     setResults(
       results.map((r) => (r.id === resultId ? { ...r, marksObtained: marks, status: "completed" as const } : r)),
     )
+
+    // Best-effort backend grading update
+    const target = results.find((r) => r.id === resultId)
+    if (!target) return
+
+    void (async () => {
+      try {
+        await fetch(`${API_URL}/api/assessment-attempts/${resultId}/grade`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ score: marks }),
+        })
+      } catch (e) {
+        console.error("Failed to update grade on server", e)
+      }
+    })()
   }
 
   return (
@@ -45,6 +115,7 @@ export default function EvaluateResultsPage() {
       </div>
 
       {/* Stats */}
+      {error && <p className="text-sm text-destructive">{error}</p>}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card className="border-border/50">
           <CardContent className="p-4">
@@ -137,7 +208,9 @@ export default function EvaluateResultsPage() {
       <Card className="border-border/50">
         <CardHeader>
           <CardTitle>Results</CardTitle>
-          <CardDescription>{assessmentResults.length} submissions</CardDescription>
+          <CardDescription>
+            {isLoading ? "Loading submissions..." : `${assessmentResults.length} submissions`}
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">

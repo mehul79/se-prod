@@ -1,0 +1,51 @@
+[
+  {
+    "id": "lab1",
+    "title": "Data Structures Lab - Arrays",
+    "description": "Hands-on lab for array implementation and operations",
+    "date": "2024-12-15",
+    "time": "10:00",
+    "duration": 120,
+    "branches": [
+      "CSE"
+    ],
+    "eventType": "lab",
+    "location": "Lab-201",
+    "status": "scheduled",
+    "capacity": 30,
+    "enrolled": 28
+  },
+  {
+    "id": "lab2",
+    "title": "Linked List Implementation Viva",
+    "description": "Viva examination for linked list concepts",
+    "date": "2024-12-18",
+    "time": "14:00",
+    "duration": 60,
+    "branches": [
+      "CSE"
+    ],
+    "eventType": "viva",
+    "location": "Lab-202",
+    "status": "scheduled",
+    "capacity": 15,
+    "enrolled": 14
+  },
+  {
+    "id": "lab_1764099509840",
+    "title": "SE eval",
+    "description": "",
+    "date": "2025-11-26",
+    "time": "08:08",
+    "duration": 60,
+    "eventType": "lab",
+    "location": "2010s",
+    "branches": [
+      "CSE",
+      "ECE"
+    ],
+    "status": "scheduled",
+    "capacity": 12,
+    "enrolled": 0
+  }
+]

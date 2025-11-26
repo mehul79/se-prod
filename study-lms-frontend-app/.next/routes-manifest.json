@@ -1,0 +1,140 @@
+{
+  "version": 3,
+  "pages404": true,
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "priority": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [],
+  "rewrites": {
+    "beforeFiles": [],
+    "afterFiles": [],
+    "fallback": []
+  },
+  "dynamicRoutes": [],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_global-error",
+      "regex": "^/_global\\-error(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_global\\-error(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/login",
+      "regex": "^/login(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/login(?:/)?$"
+    },
+    {
+      "page": "/signup",
+      "regex": "^/signup(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/signup(?:/)?$"
+    },
+    {
+      "page": "/student/assessment",
+      "regex": "^/student/assessment(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/student/assessment(?:/)?$"
+    },
+    {
+      "page": "/student/assignments",
+      "regex": "^/student/assignments(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/student/assignments(?:/)?$"
+    },
+    {
+      "page": "/student/dashboard",
+      "regex": "^/student/dashboard(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/student/dashboard(?:/)?$"
+    },
+    {
+      "page": "/student/lab-calendar",
+      "regex": "^/student/lab\\-calendar(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/student/lab\\-calendar(?:/)?$"
+    },
+    {
+      "page": "/student/results",
+      "regex": "^/student/results(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/student/results(?:/)?$"
+    },
+    {
+      "page": "/student/study-materials",
+      "regex": "^/student/study\\-materials(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/student/study\\-materials(?:/)?$"
+    },
+    {
+      "page": "/teacher/create-assessment",
+      "regex": "^/teacher/create\\-assessment(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/teacher/create\\-assessment(?:/)?$"
+    },
+    {
+      "page": "/teacher/dashboard",
+      "regex": "^/teacher/dashboard(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/teacher/dashboard(?:/)?$"
+    },
+    {
+      "page": "/teacher/evaluate-results",
+      "regex": "^/teacher/evaluate\\-results(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/teacher/evaluate\\-results(?:/)?$"
+    },
+    {
+      "page": "/teacher/lab-scheduling",
+      "regex": "^/teacher/lab\\-scheduling(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/teacher/lab\\-scheduling(?:/)?$"
+    },
+    {
+      "page": "/teacher/study-materials",
+      "regex": "^/teacher/study\\-materials(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/teacher/study\\-materials(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "rsc",
+    "varyHeader": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+    "prefetchHeader": "next-router-prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSuffix": ".prefetch.rsc",
+    "prefetchSegmentHeader": "next-router-segment-prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments",
+    "clientParamParsing": false,
+    "dynamicRSCPrerender": false
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  }
+}

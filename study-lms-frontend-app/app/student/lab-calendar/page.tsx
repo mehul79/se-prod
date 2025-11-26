@@ -1,11 +1,11 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { mockLabEvents } from "@/lib/mock-data"
 import type { LabEvent } from "@/types"
 import { Calendar, Clock, MapPin, Users, ChevronRight } from "lucide-react"
 
@@ -22,11 +22,48 @@ const eventTypeColors = {
   demo: "bg-yellow-500/10 text-yellow-700 dark:text-yellow-400",
 }
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000"
+
 export default function LabCalendarPage() {
+  const router = useRouter()
   const [selectedEvent, setSelectedEvent] = useState<LabEvent | null>(null)
   const [viewMode, setViewMode] = useState<"list" | "calendar">("list")
+  const [events, setEvents] = useState<LabEvent[]>([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  const upcomingEvents = mockLabEvents.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+  useEffect(() => {
+    let cancelled = false
+
+    async function load() {
+      setIsLoading(true)
+      setError(null)
+      try {
+        const res = await fetch(`${API_URL}/api/lab-events`)
+        if (!res.ok) {
+          throw new Error("Failed to load lab events")
+        }
+        const data = (await res.json()) as LabEvent[]
+        if (!cancelled) {
+          setEvents(data)
+        }
+      } catch (e) {
+        console.error(e)
+        if (!cancelled) setError("Could not load lab events from server")
+      } finally {
+        if (!cancelled) setIsLoading(false)
+      }
+    }
+
+    load()
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  const upcomingEvents = [...events].sort(
+    (a, b) => new Date(`${a.date}T${a.time || "00:00"}`).getTime() - new Date(`${b.date}T${b.time || "00:00"}`).getTime(),
+  )
 
   return (
     <div className="p-6 space-y-6">
@@ -206,7 +243,20 @@ export default function LabCalendarPage() {
 
                 {/* Action Buttons */}
                 <div className="flex gap-2 pt-4 border-t border-border/30">
-                  <Button className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90">Register</Button>
+                  {selectedEvent.assessmentId ? (
+                    <Button
+                      className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90"
+                      onClick={() =>
+                        router.push(
+                          `/student/assessment?assessmentId=${selectedEvent.assessmentId}&labEventId=${selectedEvent.id}`,
+                        )
+                      }
+                    >
+                      Start Lab Evaluation
+                    </Button>
+                  ) : (
+                    <Button className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90">Register</Button>
+                  )}
                   <Button variant="outline" className="flex-1 bg-transparent">
                     Add to Calendar
                   </Button>
