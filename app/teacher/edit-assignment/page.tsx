@@ -1,12 +1,18 @@
 "use client"
 
 import type React from "react"
-
 import Link from "next/link"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { createClient } from "@/utils/supabase/client"
+import { useSearchParams, useRouter } from "next/navigation"
 
 export default function UploadAssignment() {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const assignmentId = searchParams.get("id")
+
+  const supabase = createClient()
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -15,8 +21,46 @@ export default function UploadAssignment() {
     deadline: "",
   })
   const [file, setFile] = useState<File | null>(null)
+  const [existingFilePath, setExistingFilePath] = useState<string | null>(null)
+
   const [message, setMessage] = useState("")
   const [submitting, setSubmitting] = useState(false)
+  const [isEditing, setIsEditing] = useState(false)
+
+  // LOAD ASSIGNMENT IF EDIT MODE
+  useEffect(() => {
+    if (!assignmentId) return
+
+    const loadAssignment = async () => {
+      const { data: auth } = await supabase.auth.getUser()
+      const user = auth.user
+      if (!user) {
+        router.push("/teacher/login")
+        return
+      }
+
+      const { data: assignment } = await supabase
+        .from("assignments")
+        .select("*")
+        .eq("id", assignmentId)
+        .eq("teacher_id", user.id)
+        .single()
+
+      if (!assignment) return
+
+      setIsEditing(true)
+      setFormData({
+        title: assignment.title,
+        description: assignment.description ?? "",
+        subject: assignment.subject_code,
+        branch: assignment.branch_code,
+        deadline: assignment.due_at.slice(0, 16),
+      })
+      setExistingFilePath(assignment.file_path)
+    }
+
+    loadAssignment()
+  }, [assignmentId])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -35,88 +79,90 @@ export default function UploadAssignment() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    const supabase = createClient()
-    
-    setSubmitting(true)
     setMessage("")
-    
+
+    if (!formData.title || !formData.subject || !formData.branch || !formData.deadline) {
+      setMessage("Please fill in all required fields")
+      return
+    }
+
+    const { data: auth } = await supabase.auth.getUser()
+    const user = auth.user
+    if (!user) {
+      setMessage("You must be logged in to continue")
+      return
+    }
+
+    setSubmitting(true)
+
     try {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser()
-    
-      if (!user) {
-        setMessage("You must be logged in to upload assignment")
-        setSubmitting(false)
-        return
+      let filePath = existingFilePath
+
+      // upload new file ONLY if selected
+      if (file) {
+        const fileName = `${Date.now()}_${file.name}`.replace(/\s+/g, "_")
+        const storagePath = `assignments/${user.id}/${fileName}`
+
+        const uploadRes = await supabase.storage.from("assignments").upload(storagePath, file!)
+
+        if (uploadRes.error) {
+          setMessage("File upload failed: " + uploadRes.error.message)
+          setSubmitting(false)
+          return
+        }
+
+        filePath = storagePath
       }
-      
-      if (!file) {
-           setMessage("Please upload a file")
-           setSubmitting(false)
-           return
-         }
-    
-      // 2️⃣ Generate assignment id for storage path
-      const assignmentId = crypto.randomUUID()
-    
-      const teacherFolder = user.id
-      const fileName = `${Date.now()}_${file!.name}`.replace(/\s+/g, "_")
-      const file_name = file.name
-      const storagePath = `assignments/${teacherFolder}/${fileName}`
-      
-    
-      const uploadRes = await supabase.storage
-        .from("assignments")
-        .upload(storagePath, file!)
-    
-      if (uploadRes.error) {
-        setMessage("File upload failed: " + uploadRes.error.message)
-        setSubmitting(false)
-        return
+
+      const payload = {
+        title: formData.title,
+        description: formData.description,
+        subject_code: formData.subject,
+        branch_code: formData.branch,
+        due_at: new Date(formData.deadline).toISOString(),
+        file_path: filePath,
       }
-    
-      // 4️⃣ Write to `assignments` table
-      const { error: insertError } = await supabase
-        .from("assignments")
-        .insert({
-          id: assignmentId,
-          teacher_id: user.id,
-          subject_code: formData.subject,  // ⚠️ assumes subject value = subject_code (example: CS / DBMS / DS)
-          branch_code: formData.branch,    // ⚠️ assumes branch value = branch_code (CSE/ECE/etc.)
-          title: formData.title,
-          description: formData.description,
-          due_at: new Date(formData.deadline).toISOString(),
-          file_path: storagePath,
-          file_size: file!.size,
-          file_mime: file!.type,
-          file_name: file_name
-        })
-    
-      if (insertError) {
-        // rollback uploaded file
-        await supabase.storage.from("assignments").remove([storagePath])
-        setMessage("DB Error: " + insertError.message)
-        setSubmitting(false)
-        return
+
+      if (isEditing) {
+        // UPDATE assignment
+        const { error: updateError } = await supabase
+          .from("assignments")
+          .update(payload)
+          .eq("id", assignmentId)
+
+        if (updateError) {
+          setMessage("DB Error: " + updateError.message)
+          setSubmitting(false)
+          return
+        }
+
+        setMessage("Assignment updated successfully!")
+      } else {
+        // CREATE assignment
+        const newId = crypto.randomUUID()
+        const { error: insertError } = await supabase
+          .from("assignments")
+          .insert({
+            id: newId,
+            teacher_id: user.id,
+            ...payload,
+          })
+
+        if (insertError) {
+          setMessage("DB Error: " + insertError.message)
+          setSubmitting(false)
+          return
+        }
+
+        setMessage("Assignment created successfully!")
+        setFormData({ title: "", description: "", subject: "", branch: "", deadline: "" })
+        setFile(null)
       }
-    
-      // 5️⃣ Success UI reset
-      setMessage("Assignment created successfully!")
-      setFormData({
-        title: "",
-        description: "",
-        subject: "",
-        branch: "",
-        deadline: "",
-      })
-      setFile(null)
-    } catch (error) {
-      setMessage("Unexpected error: " + (error as any).message)
+    } catch (err) {
+      setMessage("Unexpected error: " + (err as any).message)
     } finally {
       setSubmitting(false)
     }
-
   }
 
   return (
@@ -131,7 +177,9 @@ export default function UploadAssignment() {
           ← BACK TO DASHBOARD
         </Link>
 
-        <h1 className="text-4xl font-bold font-mono tracking-tight mb-2">CREATE ASSIGNMENT</h1>
+        <h1 className="text-4xl font-bold font-mono tracking-tight mb-2">
+          {isEditing ? "EDIT ASSIGNMENT" : "CREATE ASSIGNMENT"}
+        </h1>
         <div className="h-1 w-24 bg-accent mb-8" />
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -144,8 +192,9 @@ export default function UploadAssignment() {
                     type="text"
                     name="title"
                     value={formData.title}
+                    disabled={isEditing}
                     onChange={handleChange}
-                    className="w-full border-2 border-foreground/30 bg-background px-3 py-2 font-mono text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent"
+                    className="w-full border-2 border-foreground/30 bg-background px-3 py-2 font-mono text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent disabled:opacity-60"
                     placeholder="Assignment Title"
                   />
                 </div>
@@ -176,7 +225,6 @@ export default function UploadAssignment() {
                       <option value="PHY">Physics</option>
                       <option value="CIV">Civil Engineering</option>
                       <option value="ELX">Electronics</option>
-
                     </select>
                   </div>
 
@@ -194,24 +242,20 @@ export default function UploadAssignment() {
                       <option value="ECE">ECE</option>
                       <option value="ME">ME</option>
                       <option value="CHEM">CHEM</option>
-
                     </select>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-mono text-muted-foreground mb-2">DEADLINE *</label>
-                    <input
-                      type="datetime-local"
-                      name="deadline"
-                      value={formData.deadline}
-                      min={new Date().toISOString().slice(0, 16)}
-                      onChange={handleChange}
-                      className="w-full border-2 border-foreground/30 bg-background px-3 py-2 font-mono text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent"
-                    />
-
-                  </div>
+                <div>
+                  <label className="block text-xs font-mono text-muted-foreground mb-2">DEADLINE *</label>
+                  <input
+                    type="datetime-local"
+                    name="deadline"
+                    value={formData.deadline}
+                    onChange={handleChange}
+                    min={new Date().toISOString().slice(0, 16)}
+                    className="w-full border-2 border-foreground/30 bg-background px-3 py-2 font-mono text-sm focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent"
+                  />
                 </div>
 
                 <button
@@ -219,12 +263,23 @@ export default function UploadAssignment() {
                   disabled={submitting}
                   className="w-full border-2 border-accent bg-accent/10 text-accent hover:bg-accent hover:text-accent-foreground disabled:opacity-50 p-3 font-mono text-sm font-semibold transition-colors duration-200 mt-6"
                 >
-                  {submitting ? "CREATING..." : "CREATE ASSIGNMENT"}
+                  {submitting ? (isEditing ? "UPDATING..." : "CREATING...") : isEditing ? "UPDATE" : "CREATE ASSIGNMENT"}
                 </button>
+
+                {message && (
+                  <div
+                    className={`border-l-2 pl-3 py-2 text-xs font-mono ${
+                      message.includes("success") ? "border-accent text-accent" : "border-red-500 text-red-500"
+                    }`}
+                  >
+                    {message}
+                  </div>
+                )}
               </form>
             </div>
           </div>
 
+          {/* FILE UPLOAD SECTION (unchanged UI) */}
           <div>
             <div className="border-2 border-accent bg-accent/5 p-6 sticky top-6">
               <h3 className="font-mono font-bold text-sm mb-4 text-accent">FILE UPLOAD</h3>
@@ -242,18 +297,15 @@ export default function UploadAssignment() {
 
                 {file && (
                   <div className="border-l-2 border-accent pl-3 py-2">
-                    <p className="text-xs font-mono text-accent">✓ {file.name}</p>
+                    <p className="text-xs font-mono text-accent">✓ {file.name.split("/").pop()?.replace(/^\d+_/, "") || file.name}</p>
                     <p className="text-xs font-mono text-muted-foreground">{(file.size / 1024).toFixed(2)} KB</p>
                   </div>
                 )}
 
-                {message && (
-                  <div
-                    className={`border-l-2 pl-3 py-2 text-xs font-mono ${
-                      message.includes("successfully") ? "border-accent text-accent" : "border-red-500 text-red-500"
-                    }`}
-                  >
-                    {message}
+                {!file && existingFilePath && (
+                  <div className="border-l-2 border-accent pl-3 py-2">
+                    <p className="text-xs font-mono text-accent">Existing File ✓</p>
+                    <p className="text-xs text-muted-foreground font-mono break-all">{existingFilePath}</p>
                   </div>
                 )}
 
@@ -263,6 +315,7 @@ export default function UploadAssignment() {
                     <li>• PDF, DOC, ZIP supported</li>
                     <li>• Max file size 10MB</li>
                     <li>• Required for submission</li>
+                    <li>• If you don't upload a new file, the old one remains</li>
                   </ul>
                 </div>
               </div>

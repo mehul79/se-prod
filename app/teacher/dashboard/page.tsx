@@ -8,10 +8,11 @@ import { createClient } from "@/utils/supabase/client"
 interface Assignment {
   id: string
   title: string
+  description: string
   subject_code: string
   branch_code: string
-  deadline: string
-  submissions: number
+  due_at: string
+  submission: number
 }
 
 interface TeacherData {
@@ -48,13 +49,7 @@ export default function TeacherDashboard() {
         .eq("id", user.id)
         .single()
 
-      if (profileError || !profile) {
-        router.push("/teacher/login")
-        return
-      }
-
-      // Prevent student entry
-      if (profile.role !== "teacher") {
+      if (profileError || !profile || profile.role !== "teacher") {
         router.push("/teacher/login")
         return
       }
@@ -68,10 +63,10 @@ export default function TeacherDashboard() {
 
       const department = branchData?.branch_code ?? "N/A"
 
-      // 4️⃣ Fetch teacher assignments
+      // 4️⃣ Fetch assignments
       const { data: assignmentRows } = await supabase
         .from("assignments")
-        .select("id, title, subject_code, branch_code, deadline, submissions")
+        .select("id, title, description, subject_code, branch_code, due_at, submission")
         .eq("teacher_id", user.id)
         .order("created_at", { ascending: false })
 
@@ -97,8 +92,6 @@ export default function TeacherDashboard() {
 
   if (loading) return <div className="min-h-screen flex items-center justify-center text-sm font-mono">Loading...</div>
   if (!teacherData) return null
-
-
   return (
     <div className="min-h-screen blueprint-grid">
       <div className="construction-line absolute top-0 left-0 right-0 h-px" />
@@ -117,6 +110,7 @@ export default function TeacherDashboard() {
           </button>
         </div>
 
+        {/* Profile cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           <div className="border-2 border-foreground/20 p-6">
             <p className="text-xs font-mono text-muted-foreground mb-2">EMPLOYEE ID</p>
@@ -132,6 +126,7 @@ export default function TeacherDashboard() {
           </div>
         </div>
 
+        {/* Buttons */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
           <Link
             href="/teacher/upload-assignment"
@@ -147,6 +142,7 @@ export default function TeacherDashboard() {
           </Link>
         </div>
 
+        {/* Assignments list */}
         <div className="border-2 border-foreground/20 p-6">
           <h2 className="text-2xl font-bold font-mono mb-6">YOUR ASSIGNMENTS</h2>
 
@@ -156,21 +152,24 @@ export default function TeacherDashboard() {
                 key={assignment.id}
                 className="border-2 border-foreground/10 p-4 hover:border-accent/30 transition-colors duration-200"
               >
-                <div className="flex justify-between items-start mb-3">
+                <div className="flex justify-between items-center mb-3">
                   <div className="flex-1">
                     <h3 className="font-mono font-bold text-sm">{assignment.title}</h3>
                     <p className="text-xs text-muted-foreground font-mono">
                       {assignment.subject_code} • {assignment.branch_code}
                     </p>
                   </div>
-                  <span className="font-mono font-bold text-accent text-lg">{assignment.submissions}</span>
+                  <span className="font-mono font-bold text-accent text-lg ">{assignment.submission}</span>
                   <span className="text-xs text-muted-foreground font-mono ml-2">submissions</span>
                 </div>
                 <div className="flex justify-between items-center pt-3 border-t-2 border-foreground/10">
-                  <p className="text-xs font-mono text-muted-foreground">Due: {assignment.deadline}</p>
+                  {/* 🔥 updated field */}
+                  <p className="text-xs font-mono text-muted-foreground">
+                    Due: {new Date(assignment.due_at).toLocaleString()}
+                  </p>
                   <div className="flex gap-2">
                     <Link
-                      href={`/teacher/upload-assignment?id=${assignment.id}`}
+                      href={`/teacher/edit-assignment?id=${assignment.id}`}
                       className="text-xs font-mono text-accent hover:underline"
                     >
                       EDIT
@@ -186,6 +185,7 @@ export default function TeacherDashboard() {
               </div>
             ))}
           </div>
+
         </div>
       </div>
     </div>
