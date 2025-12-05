@@ -2,11 +2,11 @@
 
 import type React from "react"
 import Link from "next/link"
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { createClient } from "@/utils/supabase/client"
 import { useSearchParams, useRouter } from "next/navigation"
 
-export default function UploadAssignment() {
+function UploadAssignment() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const assignmentId = searchParams.get("id")
@@ -325,4 +325,14 @@ export default function UploadAssignment() {
       </div>
     </div>
   )
+}
+
+
+
+export default function Home() {
+  return (
+    <Suspense fallback={<div>Loading search results...</div>}>
+      <UploadAssignment />
+    </Suspense>
+  );
 }
