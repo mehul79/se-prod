@@ -9,7 +9,7 @@ interface Assignment {
   id: string
   title: string
   subject: string
-  status: "pending" | "submitted" | "evaluated"
+  description: string
   dueDate: string
   score?: number
 }
@@ -58,38 +58,38 @@ export default function StudentDashboard() {
       })
 
       // 3️⃣ Get assignments & submission status for the student
-      const { data: submissionRows } = await supabase
-        .from("submissions")
+      // 3️⃣ Fetch assignments & submission status for the student
+      const { data: assignmentRows, error: assignmentErr } = await supabase
+        .from("assignments")
         .select(
           `
-          score,
-          status,
-          assignments (
             id,
             title,
-            deadline,
+            description,
             subject_code,
-            subjects (name)
-          )
-        `
+            due_at,
+            file_path
+          `
         )
-        .eq("student_id", user.id)
-
-      if (!submissionRows || submissionRows.length === 0) {
+        .eq("branch_code", profile.branch_code)  // match student branch
+        .order("deadline", { ascending: true })
+      
+      if (!assignmentRows) {
         setAssignments([])
         return
       }
-
-      // 4️⃣ Format for UI
-      const mapped: Assignment[] = submissionRows.map((row: any) => ({
-        id: row.assignments.id,
-        title: row.assignments.title,
-        subject: row.assignments.subjects.name,
-        status: (row.status ?? "pending") as Assignment["status"],
-        dueDate: row.assignments.deadline,
-        score: row.score ?? undefined,
-      }))
-
+      
+      const mapped: Assignment[] = assignmentRows.map((row: any) => {
+      
+        return {
+          id: row.id,
+          title: row.title,
+          description: row.description,
+          subject: row.subject_code,
+          dueDate: row.due_at,
+        }
+      })
+      
       setAssignments(mapped)
     }
 
@@ -129,6 +129,10 @@ export default function StudentDashboard() {
           <div className="border-2 border-foreground/20 p-6">
             <p className="text-xs font-mono text-muted-foreground mb-2">BRANCH</p>
             <p className="text-2xl font-bold font-mono">{studentData.branch}</p>
+          </div>
+          <div className="border-2 border-foreground/20 p-6">
+            <p className="text-xs font-mono text-muted-foreground mb-2">NAME</p>
+            <p className="text-2xl font-bold font-mono">{studentData.name}</p>
           </div>
         </div>
 
